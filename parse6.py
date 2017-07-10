@@ -11,7 +11,6 @@ grammar1 = CFG.fromstring("""
   S -> V Det Intent Contacts Telling
   S -> V Det Intent DestinationP Contacts Telling 
   Telling -> "says:" | ",that_says:" | "that" "says" | "that" "tells" | "that" "tell" | "that" "informs" | "informing"
-  PP -> DestinationP Contacts
   PrePolitesse -> "would" "you" "please" | "please" | "would" "you" | "would" "you" "like" | "could" "you" | "I wish" | "I wish you" | "thanks" "to" | "thanks" "for" |
   V -> "send" | "text" | "message" | "sending" | "messaging" | "texting"
   Intent -> "sms" | "message"
