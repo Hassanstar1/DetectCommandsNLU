@@ -1,8 +1,8 @@
 from nltk import *
 
 grammar1 = CFG.fromstring("""
-  S -> PrePolitesse V Contacts Det Intent Telling
-  S -> V Contacts Det Intent Telling PrePolitesse
+  S -> PrePolitesse V Contacts Det Intent ADV Telling
+  S -> ADV V Contacts Det Intent Telling PrePolitesse
   S -> V DestinationP Contacts Det Intent Telling PrePolitesse
   S -> V DestinationP Contacts Det Intent Telling
   S -> V Det Intent DestinationP Contacts Telling PrePolitesse
@@ -17,6 +17,10 @@ grammar1 = CFG.fromstring("""
   Det -> "a" | "an" | "the" | "my" | "your" | "that" |
   DestinationP -> "to" | "into"
   Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
+  ADV -> REP TEM | TEM | REP | TEM REP
+  REP ->  "daily" | "weekly"|
+  TEM -> "at" num "bm" | "at" num "am"| "now" | "at" num |
+  num -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 """)
 
 sent = "please send Samer Hassan an sms that says".split()
