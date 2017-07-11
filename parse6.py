@@ -3,7 +3,7 @@ from nltk import *
 grammar1 = CFG.fromstring("""
   S -> PrePolitesse V Contacts Det Intent ADV Telling
   S -> ADV V Contacts Det Intent Telling PrePolitesse
-  S -> V DestinationP Contacts Det Intent Telling PrePolitesse
+  S -> REP V DestinationP Contacts Det Intent TEM Telling PrePolitesse
   S -> V DestinationP Contacts Det Intent Telling
   S -> V Det Intent DestinationP Contacts Telling PrePolitesse
   S -> V Det Intent Contacts Telling PrePolitesse
