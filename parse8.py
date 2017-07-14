@@ -1,7 +1,7 @@
 import nltk
 from nltk import *
 grammar = CFG.fromstring("""
-Command -> PrePolitesse CommandVerb Contacts Intent Telling Sentence
+Command -> PrePolitesse CommandVerb Contacts Intent Telling Sentence Howtold
 PrePolitesse -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
 CommandVerb -> "send" | "text" | "sending" | "inform"
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
@@ -9,6 +9,7 @@ Intent -> "sms" | "an" "sms" | "message" | "a" "message"
 Telling -> "says" | "that" "says" | "tells"
 Sentence -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
+Howtold -> "say" "it" "loudly"
 """)
 
 productions = grammar.productions()
@@ -47,7 +48,7 @@ def parse(text):
 
     return parser.parse(tokens)
 
-results = parse("please send Samer Hassan an sms that says please mom take your medication at 3 pm")
+results = parse("please send Samer Hassan an sms that says please mom take your medication at 3 pm say it loudly")
 for result in results:
   print (result)
 
