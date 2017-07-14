@@ -9,7 +9,7 @@ Intent -> "sms" | "an" "sms" | "message" | "a" "message"
 Telling -> "says" | "that" "says" | "tells"
 Sentence -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
-Howtold -> "say" "it" "loudly"
+Howtold -> "say" "it" "loudly" Howtold | "slowly" Howtold | "and" Howtold |
 """)
 
 productions = grammar.productions()
@@ -48,7 +48,7 @@ def parse(text):
 
     return parser.parse(tokens)
 
-results = parse("please send Samer Hassan an sms that says please mom take your medication at 3 pm say it loudly")
+results = parse("please send Samer Hassan an sms that says please mom take your medication after some food at 3 pm say it loudly and slowly")
 for result in results:
   print (result)
 
