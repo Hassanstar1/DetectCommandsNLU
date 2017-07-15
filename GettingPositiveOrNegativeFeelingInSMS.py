@@ -4,6 +4,7 @@ import pickle
 from sys import exit
 
 pos_SMSs = [('I love this car', 'positive'),
+              ('I will be glad to see you dad', 'positive'),
               ('This view is amazing', 'positive'),
               ('I feel great this morning', 'positive'),
               ('I am so excited about the concert', 'positive'),
@@ -22,6 +23,7 @@ pos_SMSs = [('I love this car', 'positive'),
               ('Thomas is very zen. He is well-mannered.', 'positive')]
 
 neg_SMSs = [('I do not like this car', 'negative'),
+('I feel terrible after the course dad', 'negative'),
               ('This view is horrible', 'negative'),
               ('I feel tired this morning', 'negative'),
               ('I am not looking forward to the concert', 'negative'),
@@ -81,7 +83,7 @@ if len(sys.argv) > 1:  # if param passed 4 name of text file w/ list of SMSs
     with open(SMSfile, "r") as ins:
       for line in ins:
         runSMSs.append(line)
-runSMSs.append('I am a bad boy')  # test SMS incase
+runSMSs.append('It was a terrible match')  # test SMS incase
 poscount = 0
 negcount = 0
 for SMSt in runSMSs:
