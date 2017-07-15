@@ -1,18 +1,44 @@
 import nltk
 from nltk import *
-grammar = CFG.fromstring("""
-Command -> PrePolitesse CommandVerb Contacts Intent Telling Sentence Howtold
-PrePolitesse -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
+maverickRecognizerGrammar = CFG.fromstring("""
+Command -> PoliteExpression CommandVerb Intent TimeSentence ContactsSentence BodySentence AdditionalCommand
+
+# Polite request 
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
+
+# in future can be extended to SendSMSCommandVerbs setAlarmCommandVerbs and soooo
 CommandVerb -> "send" | "text" | "sending" | "inform"
-Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
+
+# in future will be extended to email 
 Intent -> "sms" | "an" "sms" | "message" | "a" "message"
-Telling -> "says" | "that" "says" | "tells"
-Sentence -> TEXT
+
+# ContactsSentence 
+ContactsSentence -> ContactPreposition Contacts
+#Preposition before contact
+ContactPreposition -> "to" | "for" |
+# Contacts in future can be extended to more than one contact.
+Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
+
+# timeSentence to be extended by Ahmad 
+TimeSentence -> TimePreposition Time
+# determine time sentence 
+TimePreposition -> "at" |
+Time -> Number "evening" | Number "morning"| "now" | Number AmPm |
+Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+AmPm -> "am"| "pm"
+
+# BodySentence
+BodySentence -> SMSBodyInitial SMSBody | SMSBody
+# remove this word from sms body 
+SMSBodyInitial -> "says" | "that" "says" | "tells" | "body" |"content"|
+# sms body 
+SMSBody -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
-Howtold -> "say" "it" "loudly" Howtold | "slowly" Howtold | "and" Howtold |
+
+# one or more additional command after sms body to be extended by Ali 
+AdditionalCommand -> "say" "it" "loudly" | "say" "it" "loudly" AdditionalCommand| "slowly" AdditionalCommand | "and" AdditionalCommand |
 """)
 
-productions = grammar.productions()
 
 def literal_production(key, rhs):
     """ Return a production <key> -> n
@@ -23,32 +49,37 @@ def literal_production(key, rhs):
     lhs = Nonterminal(key)
     return Production(lhs, [rhs])
 
-def parse(text):
-    """ Parse some text.
-"""
+maverickRecognizerProductions = maverickRecognizerGrammar.productions()
+
+
+def parse_maverick_command(command):
+    """ Parse Maverick Command text."""
 
     # extract new words and numbers
-    words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", text)])
-    numbers = set([match.group(0) for match in re.finditer(r"\d+", text)])
+    words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
+    numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
 
     # Make a local copy of productions
-    lproductions = list(productions)
+    local_maverick_productions = list(maverickRecognizerProductions)
 
     # Add a production for every words and number
-    lproductions.extend([literal_production("WORD", word) for word in words])
-    lproductions.extend([literal_production("NUMBER", number) for number in numbers])
+    local_maverick_productions.extend([literal_production("WORD", word) for word in words])
+    local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
 
     # Make a local copy of the grammar with extra productions
-    lgrammar = CFG(grammar.start(), lproductions)
+    local_maverick_grammar = CFG(maverickRecognizerGrammar.start(), local_maverick_productions)
 
-    # Load grammar into a parser
-    parser = nltk.RecursiveDescentParser(lgrammar)
+    # Load grammar into a maverick_NLU_parser
+    maverick_nlu_parser = nltk.RecursiveDescentParser(local_maverick_grammar)
 
-    tokens = text.split()
+    command_tokens = command.split()
 
-    return parser.parse(tokens)
+    return maverick_nlu_parser.parse(command_tokens)
 
-results = parse("please send Samer Hassan an sms that says please mom take your medication after some food at 3 pm say it loudly and slowly")
+results = parse_maverick_command("please send sms at 5 pm to Hassan body take your medication say it loudly")
+
+
+
 for result in results:
   print (result)
 
