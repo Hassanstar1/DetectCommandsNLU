@@ -3,8 +3,26 @@ from nltk import *
 maverickRecognizerGrammar = CFG.fromstring("""
 Command -> PoliteExpression CommandVerb Intent TimeSentence ContactsSentence BodySentence AdditionalCommand
 
+# different possible positions for Intent 
+Command -> PoliteExpression CommandVerb TimeSentence Intent ContactsSentence BodySentence AdditionalCommand
+Command -> PoliteExpression CommandVerb TimeSentence ContactsSentence Intent  BodySentence AdditionalCommand
+
+# different possible positions for TimeSentence
+Command -> PoliteExpression CommandVerb Intent ContactsSentence TimeSentence BodySentence AdditionalCommand
+Command -> PoliteExpression CommandVerb Intent ContactsSentence BodySentence TimeSentence AdditionalCommand
+
+# different possible positions for ContactsSentence
+Command -> PoliteExpression CommandVerb ContactsSentence Intent TimeSentence BodySentence AdditionalCommand
+Command -> PoliteExpression CommandVerb Intent TimeSentence BodySentence ContactsSentence AdditionalCommand
+
+
+# different possible positions for BodySentence
+Command -> PoliteExpression CommandVerb Intent BodySentence TimeSentence ContactsSentence  AdditionalCommand
+Command -> PoliteExpression CommandVerb Intent TimeSentence BodySentence ContactsSentence  AdditionalCommand
+
 # Polite request 
-PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
+# Polite request can be null 
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | 
 
 # in future can be extended to SendSMSCommandVerbs setAlarmCommandVerbs and soooo
 CommandVerb -> "send" | "text" | "sending" | "inform"
@@ -28,11 +46,11 @@ Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0"
 AmPm -> "am"| "pm"
 
 # BodySentence
-BodySentence -> SMSBodyInitial SMSBody | SMSBody
-# remove this word from sms body 
-SMSBodyInitial -> "says" | "that" "says" | "tells" | "body" |"content"|
-# sms body 
-SMSBody -> TEXT
+BodySentence -> SMSInitial SMS | SMS
+# remove this word from sms 
+SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content"|
+# sms  
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 # one or more additional command after sms body to be extended by Ali 
@@ -76,7 +94,7 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
 
-results = parse_maverick_command("please send sms at 5 pm to Hassan body take your medication say it loudly")
+results = parse_maverick_command(" please send sms to Hassan pm body take your medication at 5 say it loudly")
 
 
 
