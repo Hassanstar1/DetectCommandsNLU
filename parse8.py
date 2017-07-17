@@ -116,9 +116,12 @@ def parse_maverick_command(command):
     command_tokens = command.split()
 
     return maverick_nlu_parser.parse(command_tokens)
-    
+
+i=1
 results = parse_maverick_command("tell Hassan to take his medicine")
 for result in results:
+  print(i)
+  i += 1
   print (result)
-
+  #result.draw()
 
