@@ -31,15 +31,15 @@ Command -> PoliteExpression CommandVerb Intent TimeSentence BodySentence Contact
 PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | 
 
 # in future can be extended to SendSMSCommandVerbs setAlarmCommandVerbs and soooo
-CommandVerb -> "send" | "text" | "sending" | "inform"
+CommandVerb -> "send" | "text" | "sending" | "inform" | tell
 
 # in future will be extended to email 
-Intent -> "sms" | "an" "sms" | "message" | "a" "message"
+Intent -> "sms" | "an" "sms" | "message" | "a" "message" |
 
 # ContactsSentence 
 ContactsSentence -> ContactPreposition Contacts
 #Preposition before contact
-ContactPreposition -> "to" | "for" |
+ContactPreposition -> "to" | "for" | "into" |
 # Contacts in future can be extended to more than one contact.
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
 
@@ -48,8 +48,8 @@ TimeSentence -> TimePreposition Time
 # determine time sentence 
 TimePreposition -> "at" |
 Time -> Number "evening" | Number "morning"| "now" | Number AmPm |
-Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0"
-AmPm -> "am"| "pm"
+Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "10" | "11"| "12"| "13"| "14"| "15"| "16"| "17"| "18"| "19" | "20" | "21" | "22" | "23" | "24"
+AmPm -> "am"| "pm" |
 
 # BodySentence
 BodySentence -> SMSInitial SMS | SMS
@@ -106,7 +106,7 @@ def parse_maverick_command(command):
     # Make a local copy of the grammar with extra productions
     local_maverick_grammar = CFG(maverickRecognizerGrammar.start(), local_maverick_productions)
 
-    # Load grammar into a maverick_NLU_parser
+    # Load grammar into a mavericzk_NLU_parser
     maverick_nlu_parser = nltk.RecursiveDescentParser(local_maverick_grammar)
 
     command_tokens = command.split()
