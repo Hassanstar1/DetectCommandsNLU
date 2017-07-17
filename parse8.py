@@ -6,14 +6,20 @@ Command -> PoliteExpression CommandVerb Intent TimeSentence ContactsSentence Bod
 # different possible positions for Intent 
 Command -> PoliteExpression CommandVerb TimeSentence Intent ContactsSentence BodySentence AdditionalCommand
 Command -> PoliteExpression CommandVerb TimeSentence ContactsSentence Intent  BodySentence AdditionalCommand
+Command -> PoliteExpression CommandVerb Intent TimeSentence ContactsSentence  BodySentence AdditionalCommand
+Command -> PoliteExpression CommandVerb  TimeSentence ContactsSentence Intent  BodySentence AdditionalCommand
 
 # different possible positions for TimeSentence
 Command -> PoliteExpression CommandVerb Intent ContactsSentence TimeSentence BodySentence AdditionalCommand
 Command -> PoliteExpression CommandVerb Intent ContactsSentence BodySentence TimeSentence AdditionalCommand
+Command -> PoliteExpression TimeSentence CommandVerb Intent ContactsSentence BodySentence  AdditionalCommand
+Command -> TimeSentence PoliteExpression CommandVerb Intent ContactsSentence BodySentence  AdditionalCommand
 
 # different possible positions for ContactsSentence
 Command -> PoliteExpression CommandVerb ContactsSentence Intent TimeSentence BodySentence AdditionalCommand
 Command -> PoliteExpression CommandVerb Intent TimeSentence BodySentence ContactsSentence AdditionalCommand
+Command -> PoliteExpression ContactsSentence CommandVerb Intent TimeSentence BodySentence AdditionalCommand
+Command -> PoliteExpression  CommandVerb Intent ContactsSentence TimeSentence BodySentence AdditionalCommand
 
 
 # different possible positions for BodySentence
