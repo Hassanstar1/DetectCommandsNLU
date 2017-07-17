@@ -1,5 +1,9 @@
 import nltk
 from nltk import *
+import _tkinter
+from nltk.tree import *
+from nltk.draw import tree
+
 maverickRecognizerGrammar = CFG.fromstring("""
 Command -> PoliteExpression CommandVerb Intent TimeSentence ContactsSentence BodySentence AdditionalCommand
 
