@@ -54,7 +54,20 @@ SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 # one or more additional command after sms body to be extended by Ali 
-AdditionalCommand -> "say" "it" "loudly" | "say" "it" "loudly" AdditionalCommand| "slowly" AdditionalCommand | "and" AdditionalCommand |
+AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow 
+AdditionalCommandInitial -> "say" | "deliver" | "read" | "please" AdditionalCommandInitial
+AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" |
+AdditionalCommandHow ->   AdditionalHowVoice | AdditionalNotification | AdditionalCommandHow AdditionalPreposition AdditionalCommandHow
+AdditionalHowVoice -> AdditionalHowVolume | AdditionalHowSpeed 
+AdditionalHowVolume -> "loudly" | "quietly" | "softly" | "aloud" | VolumePreposition VolumeLevel Volume 
+AdditionalHowSpeed -> "slowly"
+VolumePreposition -> "in" | "with" | "at" |
+VolumeLevel -> "low" | "medium" | "high" | "loud" | "slow" | "full" | "top" | "a" VolumeLevel | "the" VolumeLevel
+Volume -> "volume" | "voice" | "volume level" |
+AdditionalPreposition -> "and" | "plus" | "and" "also" | 
+AdditionalNotification -> NotifyAction NotificationTrigger
+NotifyAction -> "notify" "me" | "send" "me" "notification" | "please" NotifyAction
+NotificationTrigger -> "when" AdditionalCommandWhat "is" "delivered" | "when" "delivered" 
 """)
 
 
@@ -93,11 +106,9 @@ def parse_maverick_command(command):
     command_tokens = command.split()
 
     return maverick_nlu_parser.parse(command_tokens)
-
-results = parse_maverick_command(" please send sms to Hassan pm body take your medication at 5 say it loudly")
-
-
-
+    
+results = parse_maverick_command("please send sms at 5 pm to Hassan body read your speech loudly say it loudly and slowly and please notify me when the message is delivered")
+results = parse_maverick_command("please send sms at 5 pm to Hassan that says read your speech loudly say it slowly in loud volume notify me when delivered")
 for result in results:
   print (result)
 
