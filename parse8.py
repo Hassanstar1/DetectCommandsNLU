@@ -44,7 +44,7 @@ ContactPreposition -> "to" | "for" | "into" |
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
 
 # timeSentence to be extended by Ahmad 
-TimeSentence -> TimePreposition Time
+TimeSentence -> TimePreposition Time |
 # determine time sentence 
 TimePreposition -> "at" |
 Time -> Number "evening" | Number "morning"| "now" | Number AmPm |
@@ -54,13 +54,13 @@ AmPm -> "am"| "pm" |
 # BodySentence
 BodySentence -> SMSInitial SMS | SMS
 # remove this word from sms 
-SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content"|
+SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content"| "to" | "that" |
 # sms  
 SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 # one or more additional command after sms body to be extended by Ali 
-AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow 
+AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow |
 AdditionalCommandInitial -> "say" | "deliver" | "read" | "please" AdditionalCommandInitial
 AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" |
 AdditionalCommandHow ->   AdditionalHowVoice | AdditionalNotification | AdditionalCommandHow AdditionalPreposition AdditionalCommandHow
@@ -113,8 +113,7 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
     
-results = parse_maverick_command("please send sms at 5 pm to Hassan body read your speech loudly say it loudly and slowly and please notify me when the message is delivered")
-results = parse_maverick_command("please send sms at 5 pm to Hassan that says read your speech loudly say it slowly in loud volume notify me when delivered")
+results = parse_maverick_command("tell Hassan to take his medicine")
 for result in results:
   print (result)
 
