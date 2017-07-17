@@ -62,7 +62,7 @@ AdditionalHowVoice -> AdditionalHowVolume | AdditionalHowSpeed
 AdditionalHowVolume -> "loudly" | "quietly" | "softly" | "aloud" | VolumePreposition VolumeLevel Volume 
 AdditionalHowSpeed -> "slowly"
 VolumePreposition -> "in" | "with" | "at" |
-VolumeLevel -> "low" | "medium" | "high" | "loud" | "slow" | "full" | "top" | "a" VolumeLevel | "the" VolumeLevel
+VolumeLevel -> "low" | "medium" | "high" | "loud" | "full" | "top" | "a" VolumeLevel | "the" VolumeLevel
 Volume -> "volume" | "voice" | "volume level" |
 AdditionalPreposition -> "and" | "plus" | "and" "also" | 
 AdditionalNotification -> NotifyAction NotificationTrigger
