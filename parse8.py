@@ -31,7 +31,7 @@ Command -> PoliteExpression CommandVerb Intent TimeSentence BodySentence Contact
 PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | 
 
 # in future can be extended to SendSMSCommandVerbs setAlarmCommandVerbs and soooo
-CommandVerb -> "send" | "text" | "sending" | "inform" | tell
+CommandVerb -> "send" | "text" | "sending" | "inform" | "tell"
 
 # in future will be extended to email 
 Intent -> "sms" | "an" "sms" | "message" | "a" "message" |
