@@ -90,6 +90,15 @@ def literal_production(key, rhs):
     lhs = Nonterminal(key)
     return Production(lhs, [rhs])
 
+
+def numbers_to_strings(argument):
+    switcher = {
+        0: "zero",
+        1: "one",
+        2: "two",
+    }
+    return switcher.get(argument, "nothing")
+
 maverickRecognizerProductions = maverickRecognizerGrammar.productions()
 
 
@@ -118,10 +127,24 @@ def parse_maverick_command(command):
     return maverick_nlu_parser.parse(command_tokens)
 
 i=1
-results = parse_maverick_command("tell Hassan to take his medicine")
-for result in results:
-  print(i)
-  i += 1
-  print (result)
-  #result.draw()
-
+results = parse_maverick_command("please send sms at 9 pm to Hassan body take your medicine say it loudly")
+for tree in results:
+    print(i)
+    i +=1
+    print("=============================================")
+    for subtree in tree.subtrees():
+        if subtree.label() == 'PoliteExpression':
+            print("PoliteExpression = ", subtree.leaves())
+        elif subtree.label() == 'CommandVerb':
+            print("CommandVerb = ", subtree.leaves())
+        elif subtree.label() == 'Intent':
+            print("Intent = ", subtree.leaves())
+        elif subtree.label() == 'TimeSentence':
+            print("TimeSentence = ", subtree.leaves())
+        elif subtree.label() == 'ContactsSentence':
+            print("ContactsSentence = ", subtree.leaves())
+        elif subtree.label() == 'BodySentence':
+            print("BodySentence = ", subtree.leaves())
+        elif subtree.label() == 'AdditionalCommand':
+            print("AdditionalCommand = ", subtree.leaves())
+    print("=============================================")
