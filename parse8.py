@@ -37,7 +37,7 @@ PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "wou
 # in future can be extended to SendSMSCommandVerbs setAlarmCommandVerbs and soooo
 CommandVerb -> "send" | "text" | "sending" | "inform" | "tell"
 
-# in future will be extended to email 
+# in future will be extended to email and so  
 Intent -> "sms" | "an" "sms" | "message" | "a" "message" |
 
 # ContactsSentence 
