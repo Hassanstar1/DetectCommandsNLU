@@ -51,9 +51,10 @@ Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan"
 TimeSentence -> TimePreposition Time |
 # determine time sentence 
 TimePreposition -> "at" |
-Time -> Number "evening" | Number "morning"| "now" | Number AmPm |
-Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "10" | "11"| "12"| "13"| "14"| "15"| "16"| "17"| "18"| "19" | "20" | "21" | "22" | "23" | "24"
-AmPm -> "am"| "pm" |
+Time -> TEXT
+#Time -> Number "evening" | Number "morning"| "now" | Number AmPm |
+#Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "10" | "11"| "12"| "13"| "14"| "15"| "16"| "17"| "18"| "19" | "20" | "21" | "22" | "23" | "24"
+#AmPm -> "am"| "pm" |
 
 # BodySentence
 BodySentence -> SMSInitial SMS | SMS
@@ -91,13 +92,6 @@ def literal_production(key, rhs):
     return Production(lhs, [rhs])
 
 
-def numbers_to_strings(argument):
-    switcher = {
-        0: "zero",
-        1: "one",
-        2: "two",
-    }
-    return switcher.get(argument, "nothing")
 
 maverickRecognizerProductions = maverickRecognizerGrammar.productions()
 
@@ -127,7 +121,7 @@ def parse_maverick_command(command):
     return maverick_nlu_parser.parse(command_tokens)
 
 i=1
-results = parse_maverick_command("please send sms at 9 pm to Hassan body take your medicine say it loudly")
+results = parse_maverick_command("please send sms at 9 pm Tomorrow to Hassan body take your medicine say it loudly")
 for tree in results:
     print(i)
     i +=1
