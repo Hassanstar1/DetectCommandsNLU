@@ -5,12 +5,14 @@ from nltk.tree import *
 from nltk.draw import tree
 
 maverickRecognizerGrammar = CFG.fromstring("""
-Command -> SimpleCommand | ComplexCommand | VariantCommand
+
+Command -> SimpleCommand | ComplexCommand | VariantCommand 
 
 SimpleCommand -> IntentPhrase ContactPhrase BodySentence 
 SimpleCommand -> CommandVerb Contacts Intent BodySentence 
 SimpleCommand -> CommandVerb Contacts BodySentence 
 SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
+
 
 IntentPhrase -> CommandVerb Intent | CommandVerb
 Intent -> "sms" | "an" "sms" | "message" | "a" "message"
@@ -20,8 +22,8 @@ ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
 
-BodySentence -> SMSInitial SMS AdditionalCommand
-SMSInitial -> "says" | "that" "says" | "tells" | "body" | "content" | "to" | "that" 
+BodySentence -> SMSInitial SMS 
+SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content" | "to" | "that" 
 SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
@@ -31,26 +33,27 @@ ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
 
-VariantCommand -> PoliteExpression SimpleCommand | SimpleCommand PoliteExpression
-VariantCommand -> ComplexCommand PoliteExpression | PoliteExpression ComplexCommand
+VariantCommand -> PoliteExpression SimpleCommand | PoliteExpression ComplexCommand
+VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCommand
+VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpression ComplexCommand AdditionalCommand
 
 
-TimePhrase -> RepeatPhrase TimePreposition Time | TimePreposition Time 
-RepeatPhrase -> Repeat TimeDeterminer
+TimePhrase -> RepeatPhrase TimePreposition Time 
+RepeatPhrase -> Repeat TimeDeterminer Range
 Repeat -> "repeat" |
-TimeDeterminer -> "daily" | "everyday" | "every" Day
+TimeDeterminer -> "daily" | "everyday" | "every" Day | 
 Day -> "Friday" | "Saturday" | "Sunday" | "Monday" |
+Range -> "this" "week" | "this" "month" |
 TimePreposition -> "at" 
 Time -> TEXT
 
 
 PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
 
-AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow | AdditionalCommandNotify | " "
-AdditionalCommandInitial -> "say" | "deliver" | "read"
+AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow
+AdditionalCommandInitial -> "say" | "deliver" | "read" | "notify" "me" "when"
 AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" 
-AdditionalCommandHow ->   "loudly" | "quietly" | "softly" | "aloud" 
-AdditionalCommandNotify -> "notify" "me" | "send" "me" "notification" 
+AdditionalCommandHow ->   "loudly" | "quietly" | "softly" | "aloud" | "is" "answered" | "is" "delivered"
 """)
 
 def literal_production(key, rhs):
@@ -72,12 +75,15 @@ def parse_maverick_command(command):
     # extract new words and numbers
     words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
     numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
-
+    finalwords = []
+    for word in words:
+        if not ( word == "say" or word == "notify"):
+            finalwords += [word]
     # Make a local copy of productions
     local_maverick_productions = list(maverickRecognizerProductions)
 
     # Add a production for every words and number
-    local_maverick_productions.extend([literal_production("WORD", word) for word in words])
+    local_maverick_productions.extend([literal_production("WORD", word) for word in finalwords])
     local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
 
     # Make a local copy of the grammar with extra productions
@@ -90,7 +96,8 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
 
-results = parse_maverick_command("send an sms to dad at 3 pm content take your medication now say it loudly")
+
+results = parse_maverick_command("please send an sms daily this week at 2 pm to Hassan body take your medicine say it loudly")
 
 for tree in results:
     print(tree)
@@ -122,17 +129,18 @@ for tree in results:
 
 # run the file on different cases
     """
-    results = parse_maverick_command("please send an sms daily at 2 pm to Ali body take your medication say it loudly")
+    
+   results = parse_maverick_command("please send an sms daily at 2 pm to Ali body take your medication say it loudly")
     results = parse_maverick_command("send an sms to dad at 3 pm content take your medication now say it loudly")
     results = parse_maverick_command("tell dad to take your medication now say it loudly")
     results = parse_maverick_command("please send an sms to Shadi body please check your email asap say it loudly")
     results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly")
-    results = parse_maverick_command("maverick texting Ali tomorrow at 8 pm tells it is a friendly reminder about our meeting today at 9 pm say it loudly")
+    results = parse_maverick_command("text Ali at 8 pm tells it is a friendly reminder about our meeting today at 9 pm say it loudly")
     results = parse_maverick_command("send Hassan an sms daily at 2 pm body take your medicine say it loudly")
-    results = parse_maverick_command("tell dad daily at 2 pm to take your medication now and please say it loudly")
+    results = parse_maverick_command("tell dad daily at 2 pm to take your medication now say it loudly")
     results = parse_maverick_command("send a message to dad tells call me back asap")
-    results = parse_maverick_command("maverick texting Samer Hassan every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly")
-    results = parse_maverick_command("tell dad everyday this week at 7 am  to take your medication now say it loudly and notify")
+    results = parse_maverick_command("texting Samer Hassan every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly")
+    results = parse_maverick_command("tell dad everyday this week at 7 am  to take your medication now notify me when it is answered")
     results = parse_maverick_command("please send an sms daily this week at 2 pm to Hassan body take your medicine say it loudly")
-   
-   """
+    
+    """
