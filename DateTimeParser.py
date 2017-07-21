@@ -25,8 +25,11 @@ values = (c.uses24,                 # 24hr clock?
 
 
 def parse_dateTime(time_sentence):
-    result = p.parseDT(time_sentence)
-    return result
+    cal = pdt.Calendar()
+    datetime_obj,parse_status = cal.parseDT(time_sentence)
+    if not parse_status:
+        return None
+    return datetime_obj
 # test the function
 """
 you can Copy/past the following example
