@@ -124,15 +124,15 @@ for tree in results:
     """
     results = parse_maverick_command("please send an sms daily at 2 pm to Ali body take your medication say it loudly")
     results = parse_maverick_command("send an sms to dad at 3 pm content take your medication now say it loudly")
-    results = parse_maverick_command("tell dad to take your medication now and please say it loudly and in fast voice")
+    results = parse_maverick_command("tell dad to take your medication now say it loudly")
     results = parse_maverick_command("please send an sms to Shadi body please check your email asap say it loudly")
-    results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly and in fast voice")
+    results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly")
     results = parse_maverick_command("maverick texting Ali tomorrow at 8 pm tells it is a friendly reminder about our meeting today at 9 pm say it loudly")
     results = parse_maverick_command("send Hassan an sms daily at 2 pm body take your medicine say it loudly")
-    results = parse_maverick_command("tell dad daily at 2 pm to take your medication now and please say it loudly and in fast voice")
+    results = parse_maverick_command("tell dad daily at 2 pm to take your medication now and please say it loudly")
     results = parse_maverick_command("send a message to dad tells call me back asap")
     results = parse_maverick_command("maverick texting Samer Hassan every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly")
-    results = parse_maverick_command("tell dad everyday this week at 7 am  to take your medication now say it loudly and notify me if answered")
+    results = parse_maverick_command("tell dad everyday this week at 7 am  to take your medication now say it loudly and notify")
     results = parse_maverick_command("please send an sms daily this week at 2 pm to Hassan body take your medicine say it loudly")
    
    """
