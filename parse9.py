@@ -108,10 +108,35 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
 
-results = parse_maverick_command("maverick texting Samer Hassan every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly")
+
+results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly and in fast voice")
 
 for tree in results:
     print(tree)
+    print("=============================================")
+    for subtree in tree.subtrees():
+        if subtree.label() == 'Intent':
+            print("Intent = ", subtree.leaves())
+        elif subtree.label() == 'CommandVerb':
+            print("CommandVerb = ", subtree.leaves())
+        elif subtree.label() == 'Contacts':
+            print("Contacts = ", subtree.leaves())
+        elif subtree.label() == 'ContactPreposition':
+            print("ContactPreposition = ", subtree.leaves())
+        elif subtree.label() == 'RepeatPhrase':
+            print("RepeatPhrase = ", subtree.leaves())
+        elif subtree.label() == 'TimePreposition':
+            print("TimePreposition = ", subtree.leaves())
+        elif subtree.label() == 'Time':
+            print("Time = ", subtree.leaves())
+        elif subtree.label() == 'SMSInitial':
+            print("SMSInitial = ", subtree.leaves())
+        elif subtree.label() == 'SMS':
+            print("SMS = ", subtree.leaves())
+        elif subtree.label() == 'AdditionalCommand':
+            print("AdditionalCommand = ", subtree.leaves())
+
+    print("=============================================")
 
 # run the file on different cases
     """
