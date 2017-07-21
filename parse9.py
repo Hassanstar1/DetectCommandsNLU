@@ -8,23 +8,25 @@ maverickRecognizerGrammar = CFG.fromstring("""
 Command -> SimpleCommand | ComplexCommand | VariantCommand
 
 SimpleCommand -> IntentPhrase ContactPhrase BodySentence 
-SimpleCommand -> CommandVerb Contacts Intent BodySentence
-SimpleCommand -> ContactPhrase IntentPhrase BodySentence
+SimpleCommand -> CommandVerb Contacts Intent BodySentence 
+SimpleCommand -> CommandVerb Contacts BodySentence 
+SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
 
 IntentPhrase -> CommandVerb Intent | CommandVerb
 Intent -> "sms" | "an" "sms" | "message" | "a" "message"
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb
 
-ContactPhrase -> Contacts | ContactPreposition Contacts
+ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
 
-BodySentence -> SMSInitial SMS
-SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content" | "to" | "that" 
-SMS -> TEXT AdditionalCommand
+BodySentence -> SMSInitial SMS AdditionalCommand
+SMSInitial -> "says" | "that" "says" | "tells" | "body" | "content" | "to" | "that" 
+SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
+ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
 ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
@@ -32,35 +34,23 @@ ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
 VariantCommand -> PoliteExpression SimpleCommand | SimpleCommand PoliteExpression
 VariantCommand -> ComplexCommand PoliteExpression | PoliteExpression ComplexCommand
 
-TimePhrase -> RepeatPhrase TimePreposition Time
+
+TimePhrase -> RepeatPhrase TimePreposition Time | TimePreposition Time 
+RepeatPhrase -> Repeat TimeDeterminer
+Repeat -> "repeat" |
+TimeDeterminer -> "daily" | "everyday" | "every" Day
+Day -> "Friday" | "Saturday" | "Sunday" | "Monday" |
 TimePreposition -> "at" 
-Time -> Number AmPm
-Number -> "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11"| "12"
-AmPm -> "am"| "pm" 
-RepeatPhrase -> Repeat TimeDeterminer Range
-Repeat -> "daily" | "everyday" | 
-TimeDeterminer -> "this"  | "next" | "every"
-Range -> "week" | "month" | "year" | Day |
-Day -> "tomorrow" | "Friday" | "Saturday" | "Sunday" | "Monday" 
+Time -> TEXT
+
 
 PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
 
-AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow | "and" AdditionalCommand |
-AdditionalCommandInitial -> "say" | "deliver" | "read" | "please" AdditionalCommandInitial
-AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body"
-AdditionalCommandHow ->   AdditionalHowVoice | AdditionalNotification | AdditionalCommandHow AdditionalPreposition AdditionalCommandHow
-AdditionalHowVoice -> AdditionalHowVolume | AdditionalHowSpeed 
-AdditionalHowVolume -> "loudly" | "quietly" | "softly" | "aloud" | VoicePreposition VolumeLevel Volume
-VoicePreposition -> "in" | "with" | "at" |
-VolumeLevel -> "low" | "medium" | "high" | "loud" | "full" | "top" | "a" VolumeLevel | "the" VolumeLevel
-Volume -> "volume" | "voice" | "volume level" | "level" | "voice level"
-AdditionalHowSpeed -> "slowly" | "normally" | "quickly" | VoicePreposition SpeedLevel Speed
-SpeedLevel -> "slow" | "medium" | "quick" | "fast"
-Speed -> "voice" | "level" | "speed"
-AdditionalPreposition -> "and" | "plus" | "and" "also"
-AdditionalNotification -> NotifyAction NotificationTrigger
-NotifyAction -> "notify" "me" | "send" "me" "notification" | "please" NotifyAction
-NotificationTrigger -> "when" AdditionalCommandWhat "is" "delivered" | "when" "delivered" | "if" "answered"
+AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow | AdditionalCommandNotify | " "
+AdditionalCommandInitial -> "say" | "deliver" | "read"
+AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" 
+AdditionalCommandHow ->   "loudly" | "quietly" | "softly" | "aloud" 
+AdditionalCommandNotify -> "notify" "me" | "send" "me" "notification" 
 """)
 
 def literal_production(key, rhs):
@@ -100,8 +90,7 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
 
-
-results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly and in fast voice")
+results = parse_maverick_command("send an sms to dad at 3 pm content take your medication now say it loudly")
 
 for tree in results:
     print(tree)
