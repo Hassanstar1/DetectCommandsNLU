@@ -73,14 +73,6 @@ def literal_production(key, rhs):
     return Production(lhs, [rhs])
 
 
-def numbers_to_strings(argument):
-    switcher = {
-        0: "zero",
-        1: "one",
-        2: "two",
-    }
-    return switcher.get(argument, "nothing")
-
 maverickRecognizerProductions = maverickRecognizerGrammar.productions()
 
 
@@ -137,6 +129,7 @@ for tree in results:
             print("AdditionalCommand = ", subtree.leaves())
 
     print("=============================================")
+
 
 # run the file on different cases
     """
