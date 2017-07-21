@@ -7,6 +7,7 @@ from nltk.draw import tree
 sentences =["tell dad to take your medication now say it loudly"]
 """
 sentences = ["please send an sms daily at 2 pm to Ali body take your medication say it loudly",
+
              "send an sms to dad at 3 pm content take your medication now say it loudly",
              "tell dad to take your medication now say it loudly",
              "please send an sms to Shadi body please check your email asap say it loudly",
