@@ -3,8 +3,8 @@ from nltk import *
 import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
-"""
-sentences =["tell dad to take your medication now say it loudly"]
+
+sentences =["please send an sms repeat it daily this week at 2 pm to Hassan body take your medicine say it loudly"]
 """
 sentences = ["please send an sms repeat daily at 2 pm to Ali body take your medication say it loudly",
              "please send an sms to dad at 9 am everyday content good morning dad say it loudly ",
@@ -42,8 +42,9 @@ sentences = ["please send an sms repeat daily at 2 pm to Ali body take your medi
              "send a message to dad tells call me back asap",
              "texting Samer Hassan repeat every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly",
              "tell dad repeat everyday this week at 7 am  to take your medication now notify me when it is answered",
-             "please send an sms repeat daily this week at 2 pm to Hassan body take your medicine say it loudly"]
-
+             "please send an sms repeat daily this week at 2 pm to Hassan body take your medicine say it loudly",
+             "please send an sms repeat it daily this week at 2 pm to Hassan body take your medicine say it loudly"]
+"""
 maverickRecognizerGrammar = CFG.fromstring("""
 
 Command -> SimpleCommand | ComplexCommand | VariantCommand 
