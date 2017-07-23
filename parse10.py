@@ -3,8 +3,8 @@ from nltk import *
 import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
-
-sentences =["send an sms to my dad asking him if he has taken his medicin"]
+"""
+sentences =["tell dad to take your medication now say it loudly"]
 """
 sentences = ["please send an sms repeat daily at 2 pm to Ali body take your medication say it loudly",
              "please send an sms to dad at 9 am everyday content good morning dad say it loudly ",
@@ -42,19 +42,17 @@ sentences = ["please send an sms repeat daily at 2 pm to Ali body take your medi
              "send a message to dad tells call me back asap",
              "texting Samer Hassan repeat every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly",
              "tell dad repeat everyday this week at 7 am  to take your medication now notify me when it is answered",
-             "please send an sms repeat daily this week at 2 pm to Hassan body take your medicine say it loudly",
-             "send an sms to my dad asking him if he has taken his medicin",
-             ""send an sms to my dad asking him if he has taken his medicin""]
-"""
+             "please send an sms repeat daily this week at 2 pm to Hassan body take your medicine say it loudly"]
+
 maverickRecognizerGrammar = CFG.fromstring("""
 
-Command -> SimpleCommand | ComplexCommand | VariantCommand
+Command -> SimpleCommand | ComplexCommand | VariantCommand 
 
 SimpleCommand -> IntentPhrase ContactPhrase BodySentence
-SimpleCommand -> CommandVerb Contacts Intent BodySentence
-SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence
-SimpleCommand -> CommandVerb Contacts BodySentence
-SimpleCommand -> ContactPhrase IntentPhrase BodySentence
+SimpleCommand -> CommandVerb Contacts Intent BodySentence 
+SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence 
+SimpleCommand -> CommandVerb Contacts BodySentence 
+SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
 SimpleCommand -> IntentPhrase BodySentence ContactPhrase
 
 IntentPhrase -> CommandVerb Intent | CommandVerb
@@ -63,17 +61,17 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 
 ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
-Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | Determiner "dad"
+Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
 
-BodySentence -> SMSInitial SMS
-SMSInitial -> "that" "says" | "tells" | "body" |"content" | "to" | "telling" Determiner "that"| "asking" "him" "if" | "asking" "him" "whether"
-Determiner -> "him" | "her" | "my"
-SMS -> TEXT
+BodySentence -> SMSInitial SMS 
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "to" | "telling" Determiner "that"
+Determiner -> "him" | "her"
+SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence
-ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence
-ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
+ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
+ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
@@ -81,11 +79,11 @@ ComplexCommand -> IntentPhrase Time ContactPhrase RepeatPhrase BodySentence
 ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase
 ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence AdditionalCommand Time
 ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence AdditionalCommand RepeatPhrase
-ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence
-ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase
+ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase    
 ComplexCommand -> SimpleCommand RepeatPhrase Time
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence
-ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence 
+ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence 
 ComplexCommand -> IntentPhrase ContactPhrase AdditionalCommand TimePhrase  BodySentence
 ComplexCommand -> IntentPhrase ContactPhrase Time AdditionalCommand RepeatPhrase  BodySentence
 ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
@@ -96,12 +94,12 @@ VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpre
 VariantCommand -> SimpleCommand AdditionalCommand TimePhrase | PoliteExpression SimpleCommand AdditionalCommand TimePhrase
 
 TimePhrase -> RepeatPhrase Time | Time
-RepeatPhrase -> "repeat" TEXT
+RepeatPhrase -> "repeat" TEXT 
 Time -> TimePreposition TEXT
 TimePreposition -> "at" | "on"
 
 
-PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to"
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to" 
 
 AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow
 AdditionalCommandInitial -> "say" | "deliver" | "read" | "notify" "me" "when"
@@ -113,14 +111,16 @@ def parseToList(s):
  results = parse_maverick_command(s)
  if (results is None):
      print("**********************Not parsed***********************")
+
  i=0
  for tree in results:
     i+=1
-    #print(tree)
+    print(tree)
+
  if (i==0):
    print("====================Not parsed=========================")
  if (i<=1):
-   print("=====================Parsed========================")
+   print("=============================================")
  else:
    print("=====================Ambiguity========================")
 
@@ -193,7 +193,6 @@ def parse_maverick_command(command):
 true =0
 for s in sentences:
   print(s)
-  print()
   if(parseToList(s)):
      true +=1
 print("Quality=")
@@ -203,5 +202,6 @@ print(true/len(sentences))
 
 
 # run the file on different cases
+
 
 

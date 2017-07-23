@@ -8,22 +8,24 @@ maverickRecognizerGrammar = CFG.fromstring("""
 
 Command -> SimpleCommand | ComplexCommand | VariantCommand 
 
-SimpleCommand -> IntentPhrase ContactPhrase BodySentence 
+SimpleCommand -> IntentPhrase ContactPhrase BodySentence
 SimpleCommand -> CommandVerb Contacts Intent BodySentence 
+SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence 
 SimpleCommand -> CommandVerb Contacts BodySentence 
 SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
-
+SimpleCommand -> IntentPhrase BodySentence ContactPhrase
 
 IntentPhrase -> CommandVerb Intent | CommandVerb
 Intent -> "sms" | "an" "sms" | "message" | "a" "message"
-CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb
+CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
 
 ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
 
 BodySentence -> SMSInitial SMS 
-SMSInitial -> "says" | "that" "says" | "tells" | "body" |"content" | "to" | "that" 
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "to" | "telling" Determiner "that"
+Determiner -> "him" | "her"
 SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
@@ -31,28 +33,37 @@ ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence
 ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
 ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
+ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
+ComplexCommand -> IntentPhrase Time ContactPhrase RepeatPhrase BodySentence
+ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase
+ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence AdditionalCommand Time
+ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence AdditionalCommand RepeatPhrase
+ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase    
+ComplexCommand -> SimpleCommand RepeatPhrase Time
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence 
+ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase AdditionalCommand TimePhrase  BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase Time AdditionalCommand RepeatPhrase  BodySentence
+ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
 
 VariantCommand -> PoliteExpression SimpleCommand | PoliteExpression ComplexCommand
 VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCommand
 VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpression ComplexCommand AdditionalCommand
+VariantCommand -> SimpleCommand AdditionalCommand TimePhrase | PoliteExpression SimpleCommand AdditionalCommand TimePhrase
+
+TimePhrase -> RepeatPhrase Time | Time
+RepeatPhrase -> "repeat" TEXT 
+Time -> TimePreposition TEXT
+TimePreposition -> "at" | "on"
 
 
-TimePhrase -> RepeatPhrase TimePreposition Time 
-RepeatPhrase -> Repeat TimeDeterminer Range
-Repeat -> "repeat" |
-TimeDeterminer -> "daily" | "everyday" | "every" Day | 
-Day -> "Friday" | "Saturday" | "Sunday" | "Monday" |
-Range -> "this" "week" | "this" "month" |
-TimePreposition -> "at" 
-Time -> TEXT
-
-
-PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like"
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to" 
 
 AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow
 AdditionalCommandInitial -> "say" | "deliver" | "read" | "notify" "me" "when"
-AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" 
+AdditionalCommandWhat -> "it" | "the" "content" | "the" "message" | "the" "body" | "this" "message"
 AdditionalCommandHow ->   "loudly" | "quietly" | "softly" | "aloud" | "is" "answered" | "is" "delivered"
 """)
 
@@ -77,7 +88,7 @@ def parse_maverick_command(command):
     numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
     finalwords = []
     for word in words:
-        if not ( word == "say" or word == "notify"):
+        if not ( word == "say" or word == "notify" or word == "repeat"):
             finalwords += [word]
     # Make a local copy of productions
     local_maverick_productions = list(maverickRecognizerProductions)
@@ -96,9 +107,7 @@ def parse_maverick_command(command):
 
     return maverick_nlu_parser.parse(command_tokens)
 
-
-results = parse_maverick_command("please send an sms daily this week at 2 pm to Hassan body take your medicine say it loudly")
-
+results = parse_maverick_command("please send an sms content good morning dad to dad at 9 am everyday say it loudly")
 for tree in results:
     print(tree)
     print("=============================================")
@@ -127,20 +136,3 @@ for tree in results:
     print("=============================================")
 
 
-# run the file on different cases
-    """
-    
-   results = parse_maverick_command("please send an sms daily at 2 pm to Ali body take your medication say it loudly")
-    results = parse_maverick_command("send an sms to dad at 3 pm content take your medication now say it loudly")
-    results = parse_maverick_command("tell dad to take your medication now say it loudly")
-    results = parse_maverick_command("please send an sms to Shadi body please check your email asap say it loudly")
-    results = parse_maverick_command("send Ahmad a message tells read your speech loudly say it loudly")
-    results = parse_maverick_command("text Ali at 8 pm tells it is a friendly reminder about our meeting today at 9 pm say it loudly")
-    results = parse_maverick_command("send Hassan an sms daily at 2 pm body take your medicine say it loudly")
-    results = parse_maverick_command("tell dad daily at 2 pm to take your medication now say it loudly")
-    results = parse_maverick_command("send a message to dad tells call me back asap")
-    results = parse_maverick_command("texting Samer Hassan every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly")
-    results = parse_maverick_command("tell dad everyday this week at 7 am  to take your medication now notify me when it is answered")
-    results = parse_maverick_command("please send an sms daily this week at 2 pm to Hassan body take your medicine say it loudly")
-    
-    """
