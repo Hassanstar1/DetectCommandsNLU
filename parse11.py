@@ -4,7 +4,38 @@ import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
 
+"""@Samer Test """
+sentences =["send an sms to dad at 9 am repeat everyday content good morning dad say it loudly",
+            "send an sms to dad at 9 am content good morning dad say it loudly",
+            "send an sms to dad at 9 am content good morning dad",
+            "send an sms to dad content good morning dad say it loudly",
+            "send an sms to dad at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send to dad an sms at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send to dad at 9 am repeat everyday  an sms content good morning dad say it loudly ",
+            "send to dad an sms at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly ",
+            "send an sms at 9 am repeat everyday  to dad content good morning dad say it loudly ",
+            "send an sms at 9 am repeat everyday content good morning dad to dad say it loudly ",
+            "send at 9 am an sms to dad repeat everyday  content good morning dad say it loudly",
+            "send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  at 9 am content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  content good morning at 9 am dad say it loudly",
+            "send an sms to dad repeat everyday  content good morning  dad say it loudly at 9 am",
+            "send an sms repeat everyday to dad at 9 am  content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  at 9 am  content good morning dad say it loudly",
+            "send an sms to dad at 9 am  content good morning dad repeat everyday  say it loudly",
+            "send an sms to dad at 9 am  content good morning dad say it loudly repeat everyday  ",
+            "send an sms content good morning dad to dad at 9 am repeat everyday  say it loudly",
+            "send an sms to dad content good morning dad at 9 am repeat everyday  say it loudly",
+            "send an sms to dad at 9 am content good morning dad repeat everyday  say it loudly",
+            "send an sms to dad at 9 am repeat everyday  say it loudly content good morning dad",
+            "send an sms say it loudly to dad at 9 am repeat everyday  content good morning dad ",
+            "send an sms to dad say it loudly at 9 am repeat everyday  content good morning dad ",
+            "send an sms to dad at 9 am say it loudly repeat everyday  content good morning dad ",
+            "send an sms to dad at 9 am repeat everyday  say it loudly content good morning dad "]
 
+
+"""
 sentences =["tell dad to take his medication now say it loudly",
             "send an sms to Hassan telling him that I can not come today and I am sorry but we can meet tomorrow",
             "Ali please take your medicine",
@@ -12,7 +43,7 @@ sentences =["tell dad to take his medication now say it loudly",
             "would you please send an sms to Samer and inform him that xxx xxx send this message tomorrow at 7 am",
             "I wish to send an sms to Ahmad that says go home as soon as possible this message must be sent today evening at 7"]
 
-"""
+
 sentences = ["please send an sms daily at 2 pm to Ali body take your medication say it loudly",
 
              "send an sms to dad at 3 pm content take your medication now say it loudly",
@@ -37,7 +68,7 @@ SimpleCommand -> CommandVerb Contacts BodySentence
 SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
 
 
-IntentPhrase -> CommandVerb Inte9nt | CommandVerb
+IntentPhrase -> CommandVerb Intent | CommandVerb
 Intent -> "sms" | "an" "sms" | "message" | "a" "message"
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb
 
@@ -52,9 +83,18 @@ TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
 ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
+#@samer accept intent after sms content 
+ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase 
 ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
+#@Samer 
+ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
+#@Samer 
+ComplexCommand -> IntentPhrase BodySentence TimePhrase ContactPhrase    
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
+# @samer: accept to contacts 
+ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
+
 
 VariantCommand -> PoliteExpression SimpleCommand | PoliteExpression ComplexCommand
 VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCommand
@@ -87,17 +127,7 @@ def parseToList(s):
  i=0
  for tree in results:
     i+=1
-    print(tree)
-
- if (i==0):
-   print("====================Not parsed=========================")
- if (i<=1):
-   print("=============================================")
- else:
-   print("=====================Ambiguity========================")
-
- return (i>0 and i<2)
- """
+    """print(tree)"""
     print("=============================================")
     for subtree in tree.subtrees():
         if subtree.label() == 'Intent':
@@ -108,8 +138,8 @@ def parseToList(s):
             print("Contacts = ", subtree.leaves())
         elif subtree.label() == 'ContactPreposition':
             print("ContactPreposition = ", subtree.leaves())
-        elif subtree.label() == 'RepeatPhrase':
-            print("RepeatPhrase = ", subtree.leaves())
+        elif subtree.label() == 'TimeDeterminer':
+            print("TimeDeterminer = ", subtree.leaves())
         elif subtree.label() == 'TimePreposition':
             print("TimePreposition = ", subtree.leaves())
         elif subtree.label() == 'Time':
@@ -121,7 +151,16 @@ def parseToList(s):
         elif subtree.label() == 'AdditionalCommand':
             print("AdditionalCommand = ", subtree.leaves())
     print("=============================================")
- """
+
+ if (i==0):
+   print("====================Not parsed=========================")
+ if (i<=1):
+   print("=============================================")
+ else:
+   print("=====================Ambiguity========================")
+
+ return (i>0 and i<2)
+
 def literal_production(key, rhs):
     """ Return a production <key> -> n
 
