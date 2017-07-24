@@ -4,47 +4,36 @@ import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
 
-sentences =["please send an sms repeat it daily this week at 2 pm to Hassan body take your medicine say it loudly"]
-"""
-sentences = ["please send an sms repeat daily at 2 pm to Ali body take your medication say it loudly",
-             "please send an sms to dad at 9 am everyday content good morning dad say it loudly ",
-             "please send an sms to dad at 9 am content good morning dad say it loudly",
-             "please send an sms to dad at 9 am content good morning dad",
-             "please send an sms to dad content good morning dad say it loudly",
-             "please send an sms to dad at 9 am everyday  content good morning dad say it loudly",
-             "please send to dad an sms at 9 am everyday  content good morning dad say it loudly",
-             "please send to dad an sms at 9 am everyday  content good morning dad say it loudly",
-             "please send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly",
-             "please send an sms at 9 am everyday  to dad content good morning dad say it loudly",
-             "please send an sms at 9 am everyday content good morning dad to dad say it loudly",
-             "please send at 9 am an sms to dad repeat everyday  content good morning dad say it loudly",
-             "please send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly",
-             "please send an sms to dad repeat everyday at 9 am content good morning dad say it loudly",
-             "please send an sms to dad repeat everyday content good morning  dad say it loudly at 9 am",
-             "please send an sms repeat everyday to dad at 9 am  content good morning dad say it loudly",
-             "please send an sms to dad repeat everyday  at 9 am  content good morning dad say it loudly",
-             "please send an sms to dad at 9 am  content good morning dad repeat everyday  say it loudly",
-             "please send an sms to dad at 9 am  content good morning dad say it loudly repeat everyday",
-             "please send an sms content good morning dad to dad at 9 am everyday say it loudly",
-             "please send an sms to dad at 9 am content good morning dad repeat everyday  say it loudly",
-             "please send an sms to dad at 9 am everyday  say it loudly content good morning dad",
-             "please send an sms say it loudly to dad at 9 am everyday  content good morning dad",
-             "please send an sms to dad say it loudly at 9 am everyday  content good morning dad",
-             "please send an sms to dad at 9 am say it loudly repeat everyday  content good morning dad",
-             "please send an sms to dad at 9 am everyday say it loudly content good morning dad",
-             "send an sms to dad at 3 pm content take your medication now say it loudly",
-             "tell dad to take your medication now say it loudly",
-             "please send an sms to Shadi body please check your email asap say it loudly",
-             "send Ahmad a message tells read your speech loudly say it loudly",
-             "text Ali at 8 pm tells it is a friendly reminder about our meeting today at 9 pm say it loudly",
-             "send Hassan an sms repeat daily at 2 pm body take your medicine say it loudly",
-             "tell dad repeat daily at 2 pm to take your medication now say it loudly",
-             "send a message to dad tells call me back asap",
-             "texting Samer Hassan repeat every Friday at 5 pm tells it is a friendly reminder about our meeting today at 6 pm say it loudly",
-             "tell dad repeat everyday this week at 7 am  to take your medication now notify me when it is answered",
-             "please send an sms repeat daily this week at 2 pm to Hassan body take your medicine say it loudly",
-             "please send an sms repeat it daily this week at 2 pm to Hassan body take your medicine say it loudly"]
-"""
+"""@Samer Test """
+sentences =["send an sms to dad at 9 am repeat everyday content good morning dad say it loudly",
+            "send an sms to dad at 9 am content good morning dad say it loudly",
+            "send an sms to dad at 9 am content good morning dad",
+            "send an sms to dad content good morning dad say it loudly",
+            "send an sms to dad at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send to dad an sms at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send to dad at 9 am repeat everyday  an sms content good morning dad say it loudly ",
+            "send to dad an sms at 9 am repeat everyday  content good morning dad say it loudly ",
+            "send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly ",
+            "send an sms at 9 am repeat everyday  to dad content good morning dad say it loudly ",
+            "send an sms at 9 am repeat everyday content good morning dad to dad say it loudly ",
+            "send at 9 am an sms to dad repeat everyday  content good morning dad say it loudly",
+            "send an sms at 9 am to dad repeat everyday  content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  at 9 am content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  content good morning at 9 am dad say it loudly",
+            "send an sms to dad repeat everyday  content good morning  dad say it loudly at 9 am",
+            "send an sms repeat everyday to dad at 9 am  content good morning dad say it loudly",
+            "send an sms to dad repeat everyday  at 9 am  content good morning dad say it loudly",
+            "send an sms to dad at 9 am  content good morning dad repeat everyday  say it loudly",
+            "send an sms to dad at 9 am  content good morning dad say it loudly repeat everyday  ",
+            "send an sms content good morning dad to dad at 9 am repeat everyday  say it loudly",
+            "send an sms to dad content good morning dad at 9 am repeat everyday  say it loudly",
+            "send an sms to dad at 9 am content good morning dad repeat everyday  say it loudly",
+            "send an sms to dad at 9 am repeat everyday  say it loudly content good morning dad",
+            "send an sms say it loudly to dad at 9 am repeat everyday  content good morning dad ",
+            "send an sms to dad say it loudly at 9 am repeat everyday  content good morning dad ",
+            "send an sms to dad at 9 am say it loudly repeat everyday  content good morning dad ",
+            "send an sms to dad at 9 am repeat everyday  say it loudly content good morning dad "]
+
 maverickRecognizerGrammar = CFG.fromstring("""
 
 Command -> SimpleCommand | ComplexCommand | VariantCommand 
@@ -56,8 +45,8 @@ SimpleCommand -> CommandVerb Contacts BodySentence
 SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
 SimpleCommand -> IntentPhrase BodySentence ContactPhrase
 
-IntentPhrase -> CommandVerb Intent | CommandVerb
-Intent -> "sms" | "an" "sms" | "message" | "a" "message"
+IntentPhrase -> CommandVerb Intent 
+Intent -> "an" "sms" | "a" "message"
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
 
 ContactPhrase -> ContactPreposition Contacts
@@ -70,11 +59,16 @@ Determiner -> "him" | "her"
 SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
+
 ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
 ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
 ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
+ComplexCommand -> CommandVerb ContactPhrase TimePhrase Intent BodySentence
+ComplexCommand -> CommandVerb TimePhrase Intent ContactPhrase BodySentence
+ComplexCommand -> CommandVerb Time Intent ContactPhrase RepeatPhrase BodySentence
+
 ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
 ComplexCommand -> IntentPhrase Time ContactPhrase RepeatPhrase BodySentence
 ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase
@@ -88,6 +82,9 @@ ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodyS
 ComplexCommand -> IntentPhrase ContactPhrase AdditionalCommand TimePhrase  BodySentence
 ComplexCommand -> IntentPhrase ContactPhrase Time AdditionalCommand RepeatPhrase  BodySentence
 ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
+ComplexCommand -> IntentPhrase ContactPhrase BodySentence TimePhrase
+ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence Time
+ComplexCommand -> CommandVerb Contacts TimePhrase BodySentence
 
 VariantCommand -> PoliteExpression SimpleCommand | PoliteExpression ComplexCommand
 VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCommand
@@ -170,16 +167,21 @@ def parse_maverick_command(command):
     # extract new words and numbers
     words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
     numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
+
+    wordsT = words
+
     finalwords = []
     for word in words:
         if not (word == "say" or word == "notify" or word == "repeat"):
             finalwords += [word]
+
     # Make a local copy of productions
     local_maverick_productions = list(maverickRecognizerProductions)
 
     # Add a production for every words and number
     local_maverick_productions.extend([literal_production("WORD", word) for word in finalwords])
     local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
+
 
     # Make a local copy of the grammar with extra productions
     local_maverick_grammar = CFG(maverickRecognizerGrammar.start(), local_maverick_productions)
