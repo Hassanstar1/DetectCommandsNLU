@@ -94,7 +94,7 @@ VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCom
 VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpression ComplexCommand AdditionalCommand
 VariantCommand -> SimpleCommand AdditionalCommand TimePhrase | PoliteExpression SimpleCommand AdditionalCommand TimePhrase
 
-TimePhrase -> RepeatPhrase Time | Time
+TimePhrase -> RepeatPhrase Time | Time | Time RepeatPhrase
 RepeatPhrase -> "repeat" TEXT 
 Time -> TimePreposition TEXT
 TimePreposition -> "at" | "on"
