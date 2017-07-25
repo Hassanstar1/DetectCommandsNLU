@@ -7,7 +7,6 @@ from nltk.draw import tree
 #sentences=["tell Ali an sms that says take your medication say it loudly"]#tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 
 """@Samer Test """
-
 sentences =["tell Ali an sms that says take your medication say it loudly",
             "send an sms to dad at 9 am repeat everyday content good morning dad say it loudly",
             "send an sms to dad at 9 am content good morning dad say it loudly",
