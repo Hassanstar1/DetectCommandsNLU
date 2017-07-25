@@ -4,8 +4,12 @@ import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
 
+#sentences=["tell Ali an sms that says take your medication say it loudly"]#tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
+
 """@Samer Test """
-sentences =["send an sms to dad at 9 am repeat everyday content good morning dad say it loudly",
+
+sentences =["tell Ali an sms that says take your medication say it loudly",
+            "send an sms to dad at 9 am repeat everyday content good morning dad say it loudly",
             "send an sms to dad at 9 am content good morning dad say it loudly",
             "send an sms to dad at 9 am content good morning dad",
             "send an sms to dad content good morning dad say it loudly",
@@ -36,16 +40,16 @@ sentences =["send an sms to dad at 9 am repeat everyday content good morning dad
 
 maverickRecognizerGrammar = CFG.fromstring("""
 
-Command -> SimpleCommand | ComplexCommand | VariantCommand 
+Command -> SimpleCommand | ComplexCommand | VariantCommand
 
 SimpleCommand -> IntentPhrase ContactPhrase BodySentence
-SimpleCommand -> CommandVerb Contacts Intent BodySentence 
-SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence 
-SimpleCommand -> CommandVerb Contacts BodySentence 
-SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
+SimpleCommand -> CommandVerb Contacts Intent BodySentence
+SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence
+SimpleCommand -> CommandVerb Contacts BodySentence
+SimpleCommand -> ContactPhrase IntentPhrase BodySentence
 SimpleCommand -> IntentPhrase BodySentence ContactPhrase
 
-IntentPhrase -> CommandVerb Intent 
+IntentPhrase -> CommandVerb Intent
 Intent -> "an" "sms" | "a" "message"
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
 
@@ -53,16 +57,16 @@ ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
 Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
 
-BodySentence -> SMSInitial SMS 
+BodySentence -> SMSInitial SMS
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "to" | "telling" Determiner "that"
 Determiner -> "him" | "her"
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
-ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence 
-ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence
+ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence
+ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase TimePhrase Intent BodySentence
@@ -74,11 +78,11 @@ ComplexCommand -> IntentPhrase Time ContactPhrase RepeatPhrase BodySentence
 ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase
 ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence AdditionalCommand Time
 ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence AdditionalCommand RepeatPhrase
-ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence 
-ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase    
+ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase
 ComplexCommand -> SimpleCommand RepeatPhrase Time
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence 
-ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence
+ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence
 ComplexCommand -> IntentPhrase ContactPhrase AdditionalCommand TimePhrase  BodySentence
 ComplexCommand -> IntentPhrase ContactPhrase Time AdditionalCommand RepeatPhrase  BodySentence
 ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
@@ -92,12 +96,12 @@ VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpre
 VariantCommand -> SimpleCommand AdditionalCommand TimePhrase | PoliteExpression SimpleCommand AdditionalCommand TimePhrase
 
 TimePhrase -> RepeatPhrase Time | Time | Time RepeatPhrase
-RepeatPhrase -> "repeat" TEXT 
+RepeatPhrase -> "repeat" TEXT
 Time -> TimePreposition TEXT
 TimePreposition -> "at" | "on"
 
 
-PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to" 
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to"
 
 AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow
 AdditionalCommandInitial -> "say" | "deliver" | "read" | "notify" "me" "when"
@@ -113,18 +117,19 @@ def parseToList(s):
  i=0
  for tree in results:
     i+=1
-    print(tree)
+    #print(tree)
 
  if (i==0):
    print("====================Not parsed=========================")
- if (i<=1):
+ if (i==1):
    print("=============================================")
+   PrintResult(tree)
  else:
    print("=====================Ambiguity========================")
 
  return (i>0 and i<2)
- """
-    print("=============================================")
+
+def PrintResult(tree):
     for subtree in tree.subtrees():
         if subtree.label() == 'Intent':
             print("Intent = ", subtree.leaves())
@@ -147,7 +152,7 @@ def parseToList(s):
         elif subtree.label() == 'AdditionalCommand':
             print("AdditionalCommand = ", subtree.leaves())
     print("=============================================")
- """
+
 def literal_production(key, rhs):
     """ Return a production <key> -> n
 
@@ -205,6 +210,5 @@ print(true/len(sentences))
 
 
 # run the file on different cases
-
 
 
