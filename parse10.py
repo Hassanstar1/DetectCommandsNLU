@@ -39,55 +39,53 @@ sentences =["tell Ali an sms that says take your medication say it loudly",
 
 maverickRecognizerGrammar = CFG.fromstring("""
 
-Command -> SimpleCommand | ComplexCommand | VariantCommand
+Command -> SimpleCommand | ComplexCommand | VariantCommand 
 
 SimpleCommand -> IntentPhrase ContactPhrase BodySentence
-SimpleCommand -> CommandVerb Contacts Intent BodySentence
-SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence
-SimpleCommand -> CommandVerb Contacts BodySentence
-SimpleCommand -> ContactPhrase IntentPhrase BodySentence
+SimpleCommand -> CommandObjVerb Intent BodySentence 
+SimpleCommand -> CommandVerb ContactPhrase Intent BodySentence 
+SimpleCommand -> ContactPhrase IntentPhrase BodySentence 
 SimpleCommand -> IntentPhrase BodySentence ContactPhrase
 
-IntentPhrase -> CommandVerb Intent
+IntentPhrase -> CommandVerb Intent 
 Intent -> "an" "sms" | "a" "message"
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
+CommandObjVerb -> CommandVerb Contacts
 
 ContactPhrase -> ContactPreposition Contacts
 ContactPreposition -> "to" | "for" | "into"
-Contacts -> "Shadi" | "Ahmad" | "Ali" | "Samer" "Hassan" | "Hassan" | "dad"
+Contacts -> TEXT
 
-BodySentence -> SMSInitial SMS
+BodySentence -> SMSInitial SMS 
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "to" | "telling" Determiner "that"
 Determiner -> "him" | "her"
-SMS -> TEXT
+SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence
-ComplexCommand -> IntentPhrase Contacts TimePhrase BodySentence
-ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase BodySentence 
+ComplexCommand -> IntentPhrase TimePhrase ContactPhrase BodySentence 
 ComplexCommand -> ContactPhrase IntentPhrase TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase Intent TimePhrase BodySentence
 ComplexCommand -> CommandVerb ContactPhrase TimePhrase Intent BodySentence
 ComplexCommand -> CommandVerb TimePhrase Intent ContactPhrase BodySentence
 ComplexCommand -> CommandVerb Time Intent ContactPhrase RepeatPhrase BodySentence
 
-ComplexCommand -> CommandVerb Contacts Intent TimePhrase BodySentence
 ComplexCommand -> IntentPhrase Time ContactPhrase RepeatPhrase BodySentence
 ComplexCommand -> IntentPhrase TimePhrase BodySentence ContactPhrase
 ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence AdditionalCommand Time
 ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence AdditionalCommand RepeatPhrase
-ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence
-ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase
+ComplexCommand -> IntentPhrase RepeatPhrase ContactPhrase Time BodySentence 
+ComplexCommand -> IntentPhrase ContactPhrase Time BodySentence RepeatPhrase    
 ComplexCommand -> SimpleCommand RepeatPhrase Time
-ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence
-ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence
+ComplexCommand -> IntentPhrase ContactPhrase TimePhrase AdditionalCommand BodySentence 
+ComplexCommand -> IntentPhrase AdditionalCommand ContactPhrase TimePhrase  BodySentence 
 ComplexCommand -> IntentPhrase ContactPhrase AdditionalCommand TimePhrase  BodySentence
 ComplexCommand -> IntentPhrase ContactPhrase Time AdditionalCommand RepeatPhrase  BodySentence
 ComplexCommand -> IntentPhrase BodySentence ContactPhrase TimePhrase
 ComplexCommand -> IntentPhrase ContactPhrase BodySentence TimePhrase
 ComplexCommand -> IntentPhrase ContactPhrase RepeatPhrase BodySentence Time
-ComplexCommand -> CommandVerb Contacts TimePhrase BodySentence
+
 
 VariantCommand -> PoliteExpression SimpleCommand | PoliteExpression ComplexCommand
 VariantCommand -> SimpleCommand AdditionalCommand | ComplexCommand AdditionalCommand
@@ -95,12 +93,12 @@ VariantCommand -> PoliteExpression SimpleCommand AdditionalCommand | PoliteExpre
 VariantCommand -> SimpleCommand AdditionalCommand TimePhrase | PoliteExpression SimpleCommand AdditionalCommand TimePhrase
 
 TimePhrase -> RepeatPhrase Time | Time | Time RepeatPhrase
-RepeatPhrase -> "repeat" TEXT
+RepeatPhrase -> "repeat" TEXT 
 Time -> TimePreposition TEXT
 TimePreposition -> "at" | "on"
 
 
-PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to"
+PoliteExpression -> "please" | "would" "you" "please" | "could" "you" | "I" "would" "like" | "I" "wish" "to" 
 
 AdditionalCommand -> AdditionalCommandInitial AdditionalCommandWhat AdditionalCommandHow
 AdditionalCommandInitial -> "say" | "deliver" | "read" | "notify" "me" "when"
@@ -176,7 +174,7 @@ def parse_maverick_command(command):
 
     finalwords = []
     for word in words:
-        if not (word == "say" or word == "notify" or word == "repeat"):
+        if not (word == "say" or word == "notify" or word == "repeat" or word == "at"):
             finalwords += [word]
 
     # Make a local copy of productions
