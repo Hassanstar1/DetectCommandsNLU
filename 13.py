@@ -6,42 +6,91 @@ from nltk.draw import tree
 
 #sentences=["tell Ali an sms that says take your medication say it loudly"]#tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 
-#sentences=["send an sms at 9 am repeat everyday say it loudly to dad  content good morning"]
+#sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
 
 """@Samer Test"""
-sentences =["send an sms to dad at 9 am repeat everyday  dad say it loudly content good morning",
-            "send an sms to dad at 9 am repeat everyday   dad say it loudly content good morning ",
+sentences =["send an sms to dad at 9 am repeat everyday   say it loudly content good morning take your medicine",
+            "send an sms to dad at 9 am repeat everyday    say it loudly content good morning ",
             "send to dad an sms at 9 am repeat everyday   say it loudly content good morning ",
-            "send to dad at 9 am repeat everyday  an sms  dad say it loudly content good morning ",
-            "send to dad an sms at 9 am repeat everyday   dad say it loudly content good morning",
-            "send an sms at 9 am to dad repeat everyday   dad say it loudly content good morning ",
-            "send an sms at 9 am repeat everyday  to dad  dad say it loudly content good morning",
-            "send an sms at 9 am repeat everyday  dad to dad say it loudly content good morning",
-            "send at 9 am an sms to dad repeat everyday   dad say it loudly content good morning",
-            "send an sms at 9 am to dad repeat everyday   dad say it loudly content good morning",
-            "send an sms to dad repeat everyday  at 9 am  dad say it loudly content good morning",
-            "send an sms to dad repeat everyday   at 9 am dad say it loudly content good morning",
-            "send an sms to dad repeat everyday    dad say it loudly at 9 am content good morning",
-            "send an sms repeat everyday to dad at 9 am   dad say it loudly content good morning",
-            "send an sms to dad repeat everyday  at 9 am   dad say it loudly content good morning",
-            "send an sms to dad at 9 am   dad repeat everyday  say it loudly content good morning",
-            "send an sms to dad at 9 am   dad say it loudly repeat everyday  content good morning",
-            "send an sms  dad to dad at 9 am repeat everyday  say it loudly content good morning",
-            "send an sms to dad  dad at 9 am repeat everyday  say it loudly content good morning",
-            "send an sms to dad at 9 am  dad repeat everyday  say it loudly content good morning",
+            "send to dad at 9 am repeat everyday  an sms   say it loudly content good morning ",
+            "send to dad an sms at 9 am repeat everyday    say it loudly content good morning",
+            "send an sms at 9 am to dad repeat everyday    say it loudly content good morning ",
+            "send an sms at 9 am repeat everyday  to dad   say it loudly content good morning",
+            "send an sms at 9 am repeat everyday   to dad say it loudly content good morning",
+            "send at 9 am an sms to dad repeat everyday    say it loudly content good morning",
+            "send an sms at 9 am to dad repeat everyday    say it loudly content good morning",
+            "send an sms to dad repeat everyday  at 9 am   say it loudly content good morning",
+            "send an sms to dad repeat everyday   at 9 am  say it loudly content good morning",
+            "send an sms to dad repeat everyday     say it loudly at 9 am content good morning",
+            "send an sms repeat everyday to dad at 9 am    say it loudly content good morning",
+            "send an sms to dad repeat everyday  at 9 am    say it loudly content good morning",
+            "send an sms to dad at 9 am    repeat everyday  say it loudly content good morning",
+            "send an sms to dad at 9 am    say it loudly repeat everyday  content good morning",
+            "send an sms   to dad at 9 am repeat everyday  say it loudly content good morning",
+            "send an sms to dad   at 9 am repeat everyday  say it loudly content good morning",
+            "send an sms to dad at 9 am   repeat everyday  say it loudly content good morning",
             "send an sms to dad at 9 am repeat everyday  say it loudly  content good morning",
             "send an sms say it loudly to dad at 9 am repeat everyday  content good morning",
             "send an sms to dad say it loudly at 9 am repeat everyday   content good morning",
             "send an sms to dad at 9 am say it loudly repeat everyday   content good morning",
             "send an sms to dad at 9 am repeat everyday  say it loudly  content good morning"]
 
-maverickRecognizerGrammar = CFG.fromstring("""
+maverickRecognizerGrammar5 = CFG.fromstring("""
 
-Command -> CommandVerb Keyword TEXT Keyword TEXT Keyword TEXT Keyword TEXT Keyword TEXT SMSInitial SMS
+Command -> CommandVerb Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 SMSInitial SMS
 
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
+TEXT1 ->TEXT
+SMS -> TEXT 
+TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
+
+""")
+maverickRecognizerGrammar4 = CFG.fromstring("""
+
+Command -> CommandVerb Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 SMSInitial SMS
+
+CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
+Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
+TEXT1 ->TEXT
+SMS -> TEXT 
+TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
+
+""")
+maverickRecognizerGrammar3 = CFG.fromstring("""
+
+Command -> CommandVerb Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 SMSInitial SMS
+
+CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
+Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
+TEXT1 ->TEXT
+SMS -> TEXT 
+TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
+
+""")
+maverickRecognizerGrammar2 = CFG.fromstring("""
+
+Command -> CommandVerb Keyword TEXT1 Keyword TEXT1 SMSInitial SMS
+
+CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
+Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
+TEXT1 ->TEXT
+SMS -> TEXT 
+TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
+
+""")
+maverickRecognizerGrammar1 = CFG.fromstring("""
+
+Command -> CommandVerb Keyword TEXT1 SMSInitial SMS
+
+CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent"
+Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
+SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
+TEXT1 ->TEXT
 SMS -> TEXT 
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
@@ -61,7 +110,8 @@ def parseToList(s):
    print("====================Not parsed=========================")
  if (i==1):
    print("=============================================")
-   print(tree)
+   PrintResult(tree)
+   #tree.draw()
  else:
    print("=====================Ambiguity========================")
 
@@ -69,26 +119,27 @@ def parseToList(s):
 
 def PrintResult(tree):
     for subtree in tree.subtrees():
-        if subtree.label() == 'Intent':
-            print("Intent = ", subtree.leaves())
-        elif subtree.label() == 'CommandVerb':
+
+        if subtree.label() == 'CommandVerb':
             print("CommandVerb = ", subtree.leaves())
-        elif subtree.label() == 'Contacts':
-            print("Contacts = ", subtree.leaves())
-        elif subtree.label() == 'ContactPreposition':
-            print("ContactPreposition = ", subtree.leaves())
-        elif subtree.label() == 'Keyword':
-            print("Keyword = ", subtree.leaves())
-        elif subtree.label() == 'TEXT':
-            print("TEXT = ", subtree.leaves())
-        elif subtree.label() == 'Time':
-            print("Time = ", subtree.leaves())
         elif subtree.label() == 'SMSInitial':
-            print("SMSInitial = ", subtree.leaves())
+            print("Message")
         elif subtree.label() == 'SMS':
-            print("SMS = ", subtree.leaves())
-        elif subtree.label() == 'AdditionalCommand':
-            print("AdditionalCommand = ", subtree.leaves())
+            print("", subtree.leaves())
+        elif subtree.label() == 'Keyword':
+            if subtree.leaves()[0] == 'an':
+                print("Intent")
+            elif subtree.leaves()[0] == 'to':
+                print("Receiver")
+            elif subtree.leaves()[0] == 'at':
+                print("Time")
+            elif subtree.leaves()[0] == 'repeat':
+                print("Frequency")
+            elif subtree.leaves()[0] == 'say':
+                print("additional say :")
+        elif subtree.label() == 'TEXT1':
+            print("", subtree.leaves())
+
     print("=============================================")
 
 def literal_production(key, rhs):
@@ -101,7 +152,7 @@ def literal_production(key, rhs):
     return Production(lhs, [rhs])
 
 
-maverickRecognizerProductions = maverickRecognizerGrammar.productions()
+maverickRecognizerProductions = maverickRecognizerGrammar5.productions()
 
 
 def parse_maverick_command(command):
@@ -110,24 +161,13 @@ def parse_maverick_command(command):
     # extract new words and numbers
     words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
     numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
-
-    wordsT = words
-
-    finalwords = []
-    for word in words:
-        if not (word == "say" or word == "notify" or word == "repeat" or word == "at"):
-            finalwords += [word]
-
     # Make a local copy of productions
     local_maverick_productions = list(maverickRecognizerProductions)
-
     # Add a production for every words and number
-    local_maverick_productions.extend([literal_production("WORD", word) for word in finalwords])
+    local_maverick_productions.extend([literal_production("WORD", word) for word in words])
     local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
-
-
     # Make a local copy of the grammar with extra productions
-    local_maverick_grammar = CFG(maverickRecognizerGrammar.start(), local_maverick_productions)
+    local_maverick_grammar = CFG(maverickRecognizerGrammar5.start(), local_maverick_productions)
 
     # Load grammar into a mavericzk_NLU_parser
     maverick_nlu_parser = nltk.RecursiveDescentParser(local_maverick_grammar)
