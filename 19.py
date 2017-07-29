@@ -273,7 +273,7 @@ def parse_maverick_command(command,i):
 
 def parse(sentences):
     global parsingResult
-    parsingResult='Hi'
+    parsingResult='Result is : \n'
     product()
     true =0
     senNum =1
@@ -300,7 +300,7 @@ def callme():
  sentences=[]
  sentences.append(str(ment.get()))
  finalResult=parse(sentences)
- mlabel2=Label(mGui, text=finalResult).pack()
+ mlabel2=Label(mGui, text=finalResult,wraplength=700).pack()
  return
 
 def GenGui():
@@ -309,14 +309,14 @@ def GenGui():
     global ment
     ment=StringVar()
 
-    mGui.geometry('900x900+100+100')
+    mGui.geometry('1000x700+50+50')
     mGui.title=('Maverick Test')
 
     mlabel = Label(mGui,text= 'Please, write your Maverick command here').pack()
 
     mButton = Button(mGui, text="Parse the Command", command=callme).pack()
 
-    mEntry=Entry(mGui,textvariable=ment).pack()
+    mEntry=Entry(mGui,textvariable=ment, width= 120).pack()
     mGui.mainloop()
 
 GenGui()
