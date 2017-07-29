@@ -4,11 +4,12 @@ import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
 
-#sentences=["tell Ali an sms that says take your medication say it loudly"]#tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
+#sentences=["send an sms to dad content good morning take your medicine"]tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 
 #sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
 
 """@Samer Test"""
+
 sentences =["send an sms to dad at 9 am repeat everyday   say it loudly content good morning take your medicine",
             "send an sms to dad at 9 am repeat everyday    say it loudly content good morning ",
             "send to dad an sms at 9 am repeat everyday   say it loudly content good morning ",
@@ -97,10 +98,20 @@ TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 """)
 
 def parseToList(s):
- results = parse_maverick_command(s)
- if (results is None):
-     print("**********************Not parsed***********************")
-
+ results = None
+ for k in range(5,1,-1):
+   results = parse_maverick_command(s,k)
+   print( results)
+   print("*********************Trying to parse the command with grammar number %d"%k)
+   if (results is None):
+      print("*********************Continue to the next grammar***********************")
+   else:
+      print("*********************A parsing result is found in grammar number %d"%k)
+      break
+ print (results)
+ if results is None:
+      print('====================Not parsed=========================')
+      return False
  i=0
  for tree in results:
     i+=1
@@ -155,7 +166,7 @@ def literal_production(key, rhs):
 maverickRecognizerProductions = maverickRecognizerGrammar5.productions()
 
 
-def parse_maverick_command(command):
+def parse_maverick_command(command,i):
     """ Parse Maverick Command text."""
 
     # extract new words and numbers
@@ -167,7 +178,16 @@ def parse_maverick_command(command):
     local_maverick_productions.extend([literal_production("WORD", word) for word in words])
     local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
     # Make a local copy of the grammar with extra productions
-    local_maverick_grammar = CFG(maverickRecognizerGrammar5.start(), local_maverick_productions)
+    if (i==5):
+     local_maverick_grammar = CFG(maverickRecognizerGrammar5.start(), local_maverick_productions)
+    elif i==4:
+     local_maverick_grammar = CFG(maverickRecognizerGrammar4.start(), local_maverick_productions)
+    elif i==3:
+     local_maverick_grammar = CFG(maverickRecognizerGrammar3.start(), local_maverick_productions)
+    elif i==2:
+     local_maverick_grammar = CFG(maverickRecognizerGrammar2.start(), local_maverick_productions)
+    else:
+     local_maverick_grammar = CFG(maverickRecognizerGrammar1.start(), local_maverick_productions)
 
     # Load grammar into a mavericzk_NLU_parser
     maverick_nlu_parser = nltk.RecursiveDescentParser(local_maverick_grammar)
@@ -178,8 +198,9 @@ def parse_maverick_command(command):
 
 true =0
 for s in sentences:
-  #print(s)
-  if(parseToList(s)):
+  print("=====================Sentence========================")
+  print(s)
+  if parseToList(s):
      true +=1
 print("Quality=")
 print(true/len(sentences))
