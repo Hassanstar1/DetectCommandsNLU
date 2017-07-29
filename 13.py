@@ -6,10 +6,13 @@ from nltk.draw import tree
 
 #sentences=["send an sms to dad content good morning take your medicine"]tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 #sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
-
-"""@Samer Test"""
-
-sentences =["send an sms to dad at 9 am repeat everyday   say it loudly content good morning take your medicine",
+sentences =["send        to dad                                         content take your medication",
+            "send an sms to dad                                         content take your medication",
+            "send an sms to dad                           say it loudly content take your medication",
+            "send an sms to dad at 9 am                   say it loudly content take your medication",
+            "send an sms to dad at 9 am  repeat everyday  say it loudly content take your medication",
+            "send an sms to dad at 9 am repeat everyday   say it loudly content good morning take your medicine"]
+"""
             "send an sms to dad at 9 am repeat everyday    say it loudly content good morning ",
             "send to dad an sms at 9 am repeat everyday   say it loudly content good morning ",
             "send to dad at 9 am repeat everyday  an sms   say it loudly content good morning ",
@@ -34,7 +37,7 @@ sentences =["send an sms to dad at 9 am repeat everyday   say it loudly content 
             "send an sms to dad say it loudly at 9 am repeat everyday   content good morning",
             "send an sms to dad at 9 am say it loudly repeat everyday   content good morning",
             "send an sms to dad at 9 am repeat everyday  say it loudly  content good morning"]
-
+"""
 maverickRecognizerGrammar5 = CFG.fromstring("""
 
 Command -> CommandVerb Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 Keyword TEXT1 SMSInitial SMS
@@ -43,7 +46,7 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
 TEXT1 ->TEXT
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 """)
@@ -55,7 +58,7 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
 TEXT1 ->TEXT
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 """)
@@ -67,7 +70,7 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
 TEXT1 ->TEXT
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 """)
@@ -79,7 +82,7 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
 TEXT1 ->TEXT
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 """)
@@ -91,41 +94,44 @@ CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" Comm
 Keyword -> "to" | "for" | "into" | "repeat" | "at" | "say" | "notify" | "an" | "a"
 SMSInitial -> "that" "says" | "tells" | "body" |"content" | "telling" Determiner "that"
 TEXT1 ->TEXT
-SMS -> TEXT 
+SMS -> TEXT
 TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 
 """)
 
 def parseToList(s):
  results = None
- for k in range(5,1,-1):
+ for k in range(5,0,-1):
+   print("- Trying to parse the command with grammar number %d"%k)
    results = parse_maverick_command(s,k)
-   print( results)
-   print("*********************Trying to parse the command with grammar number %d"%k)
-   if (results is None):
-      print("*********************Continue to the next grammar***********************")
+   if not isResultsNotNull(results):
+      print("- Continue to the next lower grammar")
    else:
-      print("*********************A parsing result is found in grammar number %d"%k)
+      print("- A parsing result is found in grammar number %d"%k)
       break
- print (results)
- if results is None:
-      print('====================Not parsed=========================')
+ # if isResultsNotNull(results):print('====================Not parsed=========================')
       return False
+ return isResultsNotNull(results)
+
+def isResultsNotNull(results):
  i=0
  for tree in results:
     i+=1
     #print(tree)
-
+    if (i == 1):
+        PrintResult(tree)
+ return (i>0 and i<2)
+"""
  if (i==0):
-   print("====================Not parsed=========================")
+   print("   ====================Not parsed=========================")
  if (i==1):
-   print("=============================================")
+   print("   =============================================")
    PrintResult(tree)
    #tree.draw()
  else:
-   print("=====================Ambiguity========================")
+   print("   =====================Ambiguity========================")
+"""
 
- return (i>0 and i<2)
 
 def PrintResult(tree):
     for subtree in tree.subtrees():
@@ -150,8 +156,6 @@ def PrintResult(tree):
         elif subtree.label() == 'TEXT1':
             print("", subtree.leaves())
 
-    print("=============================================")
-
 def literal_production(key, rhs):
     """ Return a production <key> -> n
 
@@ -162,8 +166,11 @@ def literal_production(key, rhs):
     return Production(lhs, [rhs])
 
 
-maverickRecognizerProductions = maverickRecognizerGrammar5.productions()
-
+maverickRecognizerProductions5 = maverickRecognizerGrammar5.productions()
+maverickRecognizerProductions4 = maverickRecognizerGrammar4.productions()
+maverickRecognizerProductions3 = maverickRecognizerGrammar3.productions()
+maverickRecognizerProductions2 = maverickRecognizerGrammar2.productions()
+maverickRecognizerProductions1 = maverickRecognizerGrammar1.productions()
 
 def parse_maverick_command(command,i):
     """ Parse Maverick Command text."""
@@ -172,7 +179,18 @@ def parse_maverick_command(command,i):
     words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
     numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
     # Make a local copy of productions
-    local_maverick_productions = list(maverickRecognizerProductions)
+
+    if (i == 5):
+     local_maverick_productions = list(maverickRecognizerProductions5)
+    elif (i == 4):
+     local_maverick_productions = list(maverickRecognizerProductions4)
+    elif (i == 3):
+     local_maverick_productions = list(maverickRecognizerProductions3)
+    elif (i == 2):
+     local_maverick_productions = list(maverickRecognizerProductions2)
+    elif (i == 1):
+     local_maverick_productions = list(maverickRecognizerProductions1)
+
     # Add a production for every words and number
     local_maverick_productions.extend([literal_production("WORD", word) for word in words])
     local_maverick_productions.extend([literal_production("NUMBER", number) for number in numbers])
@@ -196,8 +214,11 @@ def parse_maverick_command(command,i):
     return maverick_nlu_parser.parse(command_tokens)
 
 true =0
+senNum =1
 for s in sentences:
-  print("=====================Sentence========================")
+  print("***************************************************************************************************************************")
+  print("=====================Sentence %d ========================" %senNum)
+  senNum+=1
   print(s)
   if parseToList(s):
      true +=1
