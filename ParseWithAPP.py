@@ -298,7 +298,8 @@ def parse(sentences):
           #print("RESULT"+ parsingResult)
           true +=1
           parsingResult+= str(resss)
-
+      #elif not ParsedWell(s):
+       #   parsingResult+='You sentence is not recognised by Maverick'
     print('parsingResult=')
     print(parsingResult)
     print('Quality=')
@@ -325,9 +326,10 @@ def GenGui():
 
     mlabel = Label(mGui,text= 'Please, write your Maverick command here').pack()
 
-    mButton = Button(mGui, text="Parse the Command", command=callme).pack()
-
     mEntry=Entry(mGui,textvariable=ment, width= 120).pack()
+
+
+    mButton = Button(mGui, text="Parse the Command", command=callme).pack()
     mGui.mainloop()
 
 def drawing(tree):
