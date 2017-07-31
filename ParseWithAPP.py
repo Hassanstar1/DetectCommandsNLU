@@ -115,20 +115,12 @@ def parseToList(s):
    results = parse_maverick_command(s,k)
    if  isResultsNotNull(results):
       break
-      #print("- Continue to the next lower grammar")
-   #else:
-      #print("- A parsing result is found in grammar number %d"%k)
-
-   if not isResultsNotNull(results):print('====================Not parsed==========hhhhh===============')
  return isResultsNotNull(results)
 
 def parseToList2(s):
-
- print("in parseToList sentnece"+s)
  ParsedWellv,whichk = ParsedWell(s)
  if ParsedWellv:
   return resToString(s,whichk)
-
 
 
 def resToString(s,k):
@@ -171,7 +163,7 @@ def PrintResult2(tree):
 
 def ParsedWell(s):
  solvedBy=-1
- istrue = False
+ istrue=False
  results = None
  for k in range(5,0,-1):
    print("- Trying to parse the command with grammar number %d"%k)
@@ -184,39 +176,12 @@ def ParsedWell(s):
        print("It wassssssssssss Falssssssssssssssssssssssssssssssssssssssssssssse")
        isture= False
  return istrue,solvedBy
+
 def isResultsNotNull(results):
  i=0
  for tree in results:
     i+=1
-    #print(tree)
-    #if (i == 1):
-        #PrintResult(tree)
- #print("i is ===========================>>>>>>>>>>>>>> %d" %i)
  return (i>0 and i<2)
-
-
-def PrintResult(tree):
-    for subtree in tree.subtrees():
-
-        if subtree.label() == 'CommandVerb':
-            print("CommandVerb = ", subtree.leaves())
-        elif subtree.label() == 'SMSInitial':
-            print("Message")
-        elif subtree.label() == 'SMS':
-            print("", subtree.leaves())
-        elif subtree.label() == 'Keyword':
-            if subtree.leaves()[0] == 'an':
-                print("Intent")
-            elif subtree.leaves()[0] == 'to':
-                print("Receiver")
-            elif subtree.leaves()[0] == 'at':
-                print("Time")
-            elif subtree.leaves()[0] == 'repeat':
-                print("Frequency")
-            elif subtree.leaves()[0] == 'say':
-                print("additional say :")
-        elif subtree.label() == 'TEXT1':
-            print("", subtree.leaves())
 
 def literal_production(key, rhs):
     """ Return a production <key> -> n
@@ -283,7 +248,6 @@ def parse_maverick_command(command,i):
 def parse(sentences):
     global parsingResult
     parsingResult='Result is : \n'
-    product()
     true =0
     senNum =1
     for s in sentences:
@@ -291,15 +255,14 @@ def parse(sentences):
       print("=====================Sentence %d ========================" %senNum)
       senNum+=1
       print(s)
-      if ParsedWell(s):
+      istrue, solvedby = ParsedWell(s)
+      if istrue:
           resss, resultedTreee = parseToList2(s)
-          #print ("Hi man!")
-          #parsingResult = parseToList2(s)
-          #print("RESULT"+ parsingResult)
           true +=1
           parsingResult+= str(resss)
-      #elif not ParsedWell(s):
-       #   parsingResult+='You sentence is not recognised by Maverick'
+      else: resultedTreee=None
+
+
     print('parsingResult=')
     print(parsingResult)
     print('Quality=')
@@ -311,11 +274,13 @@ def callme():
  sentences=[]
  sentences.append(str(ment.get()))
  finalResult,basicTree=parse(sentences)
- mlabel2=Label(mGui, text=finalResult,wraplength=700).pack()
+ if basicTree is None: mlabel2=Label(mGui, text="Sorry, we did not recognised your command. Please, repeat again in a clearer way",wraplength=700).pack()
+ else: mlabel2=Label(mGui, text=finalResult,wraplength=700).pack()
  drawing(basicTree)
  return
 
 def GenGui():
+    product()
     global mGui
     mGui= Tk()
     global ment
@@ -333,5 +298,8 @@ def GenGui():
     mGui.mainloop()
 
 def drawing(tree):
-    tree.draw()
+    if not(tree is None):
+     tree.draw()
+
+
 GenGui()
