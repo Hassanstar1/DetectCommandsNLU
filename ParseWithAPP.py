@@ -6,7 +6,7 @@ import _tkinter
 from nltk.tree import *
 from nltk.draw import tree
 from tkinter import *
-
+import speech_recognition as sr
 
 
 
@@ -273,19 +273,53 @@ def callme():
  mtext=ment.get()
  sentences=[]
  sentences.append(str(ment.get()))
+ sentences.append(str(ment5.get()))
+
  finalResult,basicTree=parse(sentences)
- if basicTree is None: mlabel2=Label(mGui, text="Sorry, we did not recognised your command. Please, repeat again in a clearer way",wraplength=700).pack()
- else: mlabel2=Label(mGui, text=finalResult,wraplength=700).pack()
+ if basicTree is None:
+     mlabel2=Label(mGui, text="Sorry, we did not recognised your command. Please, repeat again in a clearer way",wraplength=700, anchor= CENTER).pack()
+ else:
+     mlabel2=Label(mGui, text=finalResult,wraplength=700)
+     mlabel2.pack()
  drawing(basicTree)
  return
+
+def combine_funcs(*funcs):
+    def combined_func(*args, **kwargs):
+        for f in funcs:
+            f(*args, **kwargs)
+    return combined_func
+
+def stt2():
+    # Record Audio
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Say something!")
+        audio = r.listen(source)
+
+    # Speech recognition using Google Speech Recognition
+    try:
+        # for testing purposes, we're just using the default API key
+        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+        # instead of `r.recognize_google(audio)`
+        s=r.recognize_google(audio)
+        ment5.set(s)
+        #print("You said: " + s)
+
+    except sr.UnknownValueError:
+        ment5.set("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        ment5.set("Could not request results from Google Speech Recognition service; {0}")
 
 def GenGui():
     product()
     global mGui
     mGui= Tk()
     global ment
-    ment=StringVar()
-
+    ment=StringVar(mGui)
+    global ment5
+    ment5=StringVar(mGui)
+    #sss=stt2()
     mGui.geometry('1000x700+50+50')
     mGui.title=('Maverick Test')
 
@@ -293,13 +327,40 @@ def GenGui():
 
     mEntry=Entry(mGui,textvariable=ment, width= 120).pack()
 
+    mButtonv = Button(mGui, text="Enter a Voice Command!", command=stt2).pack()
+
+    mEntry2=Entry(mGui,textvariable =ment5, width= 120).pack()
 
     mButton = Button(mGui, text="Parse the Command", command=callme).pack()
+
+
     mGui.mainloop()
 
 def drawing(tree):
     if not(tree is None):
      tree.draw()
+
+def stt():
+    # Record Audio
+    global ment2
+    ment2=StringVar()
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Say something!")
+        audio = r.listen(source)
+
+    # Speech recognition using Google Speech Recognition
+    try:
+        s=r.recognize_google(audio)
+        mEntry2 = Entry(mGui, text=s, width=120)
+        mEntry2.pack()
+        print("You said: " + s)
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+
 
 
 GenGui()
