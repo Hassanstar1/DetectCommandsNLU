@@ -272,8 +272,10 @@ def parse(sentences):
 def callme():
  mtext=ment.get()
  sentences=[]
- sentences.append(str(ment.get()))
- sentences.append(str(ment5.get()))
+ if(len(str(ment.get))>1):
+  sentences.append(str(ment.get()))
+ elif(len(str(ment5.get))>1):
+  sentences.append(str(ment5.get()))
 
  finalResult,basicTree=parse(sentences)
  if basicTree is None:
@@ -303,13 +305,13 @@ def stt2():
         # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
         # instead of `r.recognize_google(audio)`
         s=r.recognize_google(audio)
-        ment5.set(s)
+        ment.set(s)
         #print("You said: " + s)
 
     except sr.UnknownValueError:
-        ment5.set("Google Speech Recognition could not understand audio")
+        ment.set("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
-        ment5.set("Could not request results from Google Speech Recognition service; {0}")
+        ment.set("Could not request results from Google Speech Recognition service; {0}")
 
 def GenGui():
     product()
@@ -329,7 +331,7 @@ def GenGui():
 
     mButtonv = Button(mGui, text="Enter a Voice Command!", command=stt2).pack()
 
-    mEntry2=Entry(mGui,textvariable =ment5, width= 120).pack()
+    #mEntry2=Entry(mGui,textvariable =ment5, width= 120).pack()
 
     mButton = Button(mGui, text="Parse the Command", command=callme).pack()
 
