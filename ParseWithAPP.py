@@ -9,6 +9,8 @@ from tkinter import *
 import speech_recognition as sr
 import pygame
 from gtts import gTTS
+import os
+import time
 
 #sentences=["send an sms to dad content good morning take your medicine"]tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 #sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
@@ -306,7 +308,7 @@ def stt2():
         # instead of `r.recognize_google(audio)`
         s=r.recognize_google(audio)
         ment.set(s)
-        #print("You said: " + s)
+        print("You said: " + s)
 
     except sr.UnknownValueError:
         ment.set("Google Speech Recognition could not understand audio")
@@ -315,12 +317,21 @@ def stt2():
 
 def yousaid():
     tts = gTTS(text=ment.get(), lang='en', slow=False)
-    tts.save("hh.mp3")
-    file="hh.mp3"
+    tts.save("hh2.mp3")
+    file="hh2.mp3"
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load(file)
     pygame.mixer.music.play()
+    print
+    "Start : %s" % time.ctime()
+    time.sleep(5)
+    print
+    "End : %s" % time.ctime()
+    pygame.mixer.stop()
+    pygame.mixer.quit()
+    os.remove(file)
+    print("File Removed!")
 
 def GenGui():
     product()
