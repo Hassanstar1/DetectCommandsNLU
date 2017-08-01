@@ -7,8 +7,8 @@ from nltk.tree import *
 from nltk.draw import tree
 from tkinter import *
 import speech_recognition as sr
-
-
+import pygame
+from gtts import gTTS
 
 #sentences=["send an sms to dad content good morning take your medicine"]tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 #sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
@@ -313,6 +313,15 @@ def stt2():
     except sr.RequestError as e:
         ment.set("Could not request results from Google Speech Recognition service; {0}")
 
+def yousaid():
+    tts = gTTS(text=ment.get(), lang='en', slow=False)
+    tts.save("hh.mp3")
+    file="hh.mp3"
+    pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load(file)
+    pygame.mixer.music.play()
+
 def GenGui():
     product()
     global mGui
@@ -335,7 +344,7 @@ def GenGui():
 
     mButton = Button(mGui, text="Parse the Command", command=callme).pack()
 
-
+    mButtonStt = Button(mGui, text="Check what you said", command=yousaid).pack()
     mGui.mainloop()
 
 def drawing(tree):
