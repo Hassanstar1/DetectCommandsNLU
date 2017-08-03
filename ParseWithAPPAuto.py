@@ -310,7 +310,7 @@ def callme():
      mlabel2=Label(mGui, text="Sorry, we did not recognised your command. Please, repeat again in a clearer way",wraplength=700, anchor= CENTER).pack()
      ment6.set("Sorry, we did not recognised your command. Please, repeat again in a clearer way")
  else:
-     ment6.set("Do you want to do the following?" + ment.get())
+     ment6.set("Do you want to do the following? if you argree say yes or ok" + ment.get())
      stt3()
      if "yes" in ment.get() or "ok" in ment.get():
          mlabel2 = Label(mGui, text="Your Message is sent with the following contents:\n"+ finalResult, wraplength=700)
