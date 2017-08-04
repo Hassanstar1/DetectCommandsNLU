@@ -211,9 +211,9 @@ def product():
 def parse_maverick_command(command,i):
     """ Parse Maverick Command text."""
 
-    # extract new words and numbers
-    words = set([match.group(0) for match in re.finditer(r"[a-zA-Z]+", command)])
-    numbers = set([match.group(0) for match in re.finditer(r"\d+", command)])
+    # extract new words and numbers with other characters such as "," and "."
+    words = set([match.group(0) for match in re.finditer(r'''(['()""\w.]+|\.+|\?+|\,+|\!+|\:+|\;+|\$?\d+(\.\d+)?%?)''', command)])
+    numbers = set([match.group(0) for match in re.finditer("[-+]?\d+[\.]?\d*", command)])
     # Make a local copy of productions
 
     if (i == 5):
