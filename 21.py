@@ -7,7 +7,7 @@ from nltk.draw import tree
 #sentences=["send an sms to dad content good morning take your medicine"]tell Ali the following message xxxx", "text Ali with the following sms xxx", "send an sms that contains the content xxx to Ali"]
 #sentences=["send an sms to dad at 9 am July 13 2017 repeat every 4 hours   say it loudly content good morning Dad take your medicine"]
 sentences =["please send an sms to dad at 9 am repeat everyday  say it loudly  content good morning",
-            "to dad send a message content take your medication dad my dad",
+            "to dad send a message content take your medication dad",
             "at 10 pm send a message tells i would like to meet you at your office tommorow morning at 8 pm",
             "i would like sending a message to dad content take your medication dad",
             "leave a message content take your medication dad",
@@ -114,8 +114,8 @@ TEXT -> WORD | WORD TEXT | NUMBER | NUMBER TEXT
 """)
 #  Build a new CFG that can accept other variations of commands; sentences begin with the time slot, the contact slot or an initial/polite talk.
 maverickRecognizerGrammar1 = CFG.fromstring("""
-Command -> CommandSlots ContentSlot | TEXT0 CommandSlots ContentSlot
-CommandSlots -> Slot | Slot CommandSlots 
+Command -> CommandSlots | TEXT0 CommandSlots 
+CommandSlots -> Slot ContentSlot | Slot CommandSlots ContentSlot
 Slot -> Intent | CommandVerb | TimeSlot | AdditionalSlot | ContactSlot | FrequencySlot
 Intent ->  "an" "sms" | "a" "message" 
 CommandVerb -> "send" | "text" | "inform" | "tell" | "texting" | "maverick" CommandVerb | "must" "be" "sent" | "sending"
